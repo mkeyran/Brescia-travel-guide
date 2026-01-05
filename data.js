@@ -451,6 +451,413 @@ const placesData = [
             "📷 Photogenic streets"
         ],
         tips: "Lovely in spring when gardens bloom. Very quiet area. Good for early morning walks."
+    },
+
+    // ========== MORE HIDDEN GEMS & ATTRACTIONS ==========
+    {
+        id: 26,
+        name: "Libreria Tarantola",
+        category: "attractions",
+        type: "Historic Bookshop",
+        icon: "📚",
+        lat: 45.5399,
+        lng: 10.2176,
+        description: "Enchanting 19th-century bookshop with floor-to-ceiling shelves, sliding ladders, and rare books. Cat included. A literary treasure.",
+        details: [
+            "🕐 Mon-Sat: 9:30-12:30, 15:30-19:30",
+            "📖 New & antiquarian books",
+            "🐱 Resident cat named Dante",
+            "🪜 Original wooden ladders"
+        ],
+        tips: "The owner speaks English and loves recommending Italian literature"
+    },
+    {
+        id: 27,
+        name: "Fontana dei Delfini",
+        category: "attractions",
+        type: "Hidden Fountain",
+        icon: "⛲",
+        lat: 45.5378,
+        lng: 10.2193,
+        description: "16th-century fountain tucked in a quiet courtyard. Dolphins carved in marble, surrounded by jasmine in summer.",
+        details: [
+            "💰 Free access",
+            "📸 Beautiful photo spot",
+            "🌺 Jasmine blooms June-August",
+            "🤫 Very few tourists"
+        ],
+        tips: "Access through Via delle Battaglie - look for the small archway"
+    },
+    {
+        id: 28,
+        name: "Bottega del Liutaio Bianchi",
+        category: "attractions",
+        type: "Violin Maker",
+        icon: "🎻",
+        lat: 45.5372,
+        lng: 10.2169,
+        description: "Traditional violin maker's workshop. Watch master craftsman shape instruments using 18th-century techniques. Sometimes you can listen to testing.",
+        details: [
+            "🕐 By appointment or lucky timing",
+            "🎶 Active workshop since 1987",
+            "👨‍🔧 Master craftsman trained in Cremona",
+            "👀 Can watch through window"
+        ],
+        tips: "Mornings he often works with door open - respectfully peek in"
+    },
+    {
+        id: 29,
+        name: "Oratorio di San Giovanni",
+        category: "attractions",
+        type: "Frescoed Chapel",
+        icon: "🎨",
+        lat: 45.5394,
+        lng: 10.2151,
+        description: "Small 15th-century chapel with stunning Renaissance frescoes. Often overlooked, absolutely breathtaking inside.",
+        details: [
+            "🕐 Open: Tue-Sun 10:00-13:00",
+            "💰 €1 donation suggested",
+            "🎨 Frescoes by Ferramola",
+            "⏱️ 15-20 min visit"
+        ],
+        tips: "Almost never crowded - you might have it all to yourself"
+    },
+    {
+        id: 30,
+        name: "Vicolo del Forno",
+        category: "attractions",
+        type: "Medieval Lane",
+        icon: "🏛️",
+        lat: 45.5382,
+        lng: 10.2187,
+        description: "Narrow medieval lane with original cobblestones and hanging flower boxes. Leads to unexpected courtyards.",
+        details: [
+            "📍 Off Via dei Musei",
+            "🌸 Gorgeous in spring",
+            "📷 Instagram-worthy",
+            "🚶 Part of old bread-makers' quarter"
+        ],
+        tips: "Walk all the way through - three connected courtyards, each more beautiful"
+    },
+    {
+        id: 31,
+        name: "Botanical Corner - Villa Fenaroli",
+        category: "attractions",
+        type: "Garden Oasis",
+        icon: "🌿",
+        lat: 45.5358,
+        lng: 10.2214,
+        description: "Small botanical garden attached to historic villa. Medicinal herbs, rare plants, peaceful benches.",
+        details: [
+            "🕐 Open: Sat-Sun 14:00-18:00",
+            "💰 Free entry",
+            "🌱 Over 300 plant species",
+            "🪑 Shaded benches"
+        ],
+        tips: "Volunteer guides on Sundays share fascinating plant stories"
+    },
+    {
+        id: 32,
+        name: "Chiesa di Sant'Agata",
+        category: "attractions",
+        type: "Baroque Church",
+        icon: "⛪",
+        lat: 45.5387,
+        lng: 10.2202,
+        description: "Intimate Baroque church with trompe-l'oeil ceiling that seems infinite. Hidden gem of architecture.",
+        details: [
+            "🕐 Open: Daily 8:00-11:00, 16:00-18:30",
+            "💰 Free",
+            "🎨 Stunning illusionistic ceiling",
+            "🕯️ Still used for morning mass"
+        ],
+        tips: "Enter quietly if service ongoing. Sit and look up - the ceiling is magical"
+    },
+
+    // ========== MORE VIEWPOINTS ==========
+    {
+        id: 33,
+        name: "Viale Venezia Overlook",
+        category: "viewpoints",
+        type: "Street Viewpoint",
+        icon: "🌇",
+        lat: 45.5435,
+        lng: 10.2142,
+        description: "Less-known viewpoint along the hillside road. Benches under trees, sunset views over the city.",
+        details: [
+            "🌅 Best at: Sunset",
+            "🪑 Multiple benches",
+            "🌳 Shaded in afternoon",
+            "🚶 Easy access from Via Castello"
+        ],
+        tips: "Locals gather here for evening passeggiata (stroll)"
+    },
+    {
+        id: 34,
+        name: "Torre del Popolo - Ramparts",
+        category: "viewpoints",
+        type: "Historic Rampart",
+        icon: "🗼",
+        lat: 45.5447,
+        lng: 10.2183,
+        description: "Ancient defensive walls with walking path and views. Part of castle complex but quieter section.",
+        details: [
+            "🕐 Accessible dawn to dusk",
+            "💰 Free",
+            "📏 200m walkable rampart",
+            "🏔️ North-facing Alpine views"
+        ],
+        tips: "Morning fog creates mystical atmosphere over the city below"
+    },
+
+    // ========== MORE LOCAL FOOD SPOTS ==========
+    {
+        id: 35,
+        name: "Frantoio Bonamini",
+        category: "food",
+        type: "Olive Oil Mill",
+        icon: "🫒",
+        lat: 45.5363,
+        lng: 10.2208,
+        description: "Small olive oil producer with tasting room. Extra virgin oil from Lake Garda groves. Buy directly from producer.",
+        details: [
+            "🕐 Thu-Sat: 10:00-13:00, 16:00-19:00",
+            "🫒 Cold-pressed extra virgin",
+            "👅 Free tastings",
+            "🎁 Beautiful gift bottles"
+        ],
+        tips: "Try the lemon-infused oil - perfect with fish or vegetables"
+    },
+    {
+        id: 36,
+        name: "Il Fornaio di Via Gramsci",
+        category: "food",
+        type: "Neighborhood Bakery",
+        icon: "🥐",
+        lat: 45.5348,
+        lng: 10.2195,
+        description: "No-frills bakery where locals buy daily bread. Incredible whole grain loaves and pizza by the slice at lunch.",
+        details: [
+            "🕐 Mon-Sat: 6:00-13:30, 17:00-20:00",
+            "🍕 Hot pizza 12:00-13:30",
+            "🌾 Stone-ground flour",
+            "💰 Very cheap"
+        ],
+        tips: "The 'pane di segale' (rye bread) stays fresh for days - perfect for hiking"
+    },
+    {
+        id: 37,
+        name: "Torrefazione Duomo",
+        category: "food",
+        type: "Coffee Roaster",
+        icon: "☕",
+        lat: 45.5401,
+        lng: 10.2191,
+        description: "Historic coffee roaster since 1962. Beans roasted daily on-site. Intoxicating aroma fills the street.",
+        details: [
+            "🕐 Mon-Sat: 7:30-19:00",
+            "☕ Fresh roasted daily",
+            "🌍 Direct trade beans",
+            "🎒 Vacuum-sealed for travel"
+        ],
+        tips: "Buy the 'Brescia blend' - perfect espresso. Owner gives brewing tips"
+    },
+    {
+        id: 38,
+        name: "Apicoltura Valcamonica",
+        category: "food",
+        type: "Honey Producer",
+        icon: "🍯",
+        lat: 45.5369,
+        lng: 10.2176,
+        description: "Small stand selling honey from mountain beekeepers. Acacia, chestnut, and rare alpine flower varieties.",
+        details: [
+            "📅 Tuesday & Friday mornings",
+            "🕐 8:00-12:00",
+            "🐝 Raw, unfiltered honey",
+            "🏔️ From alpine meadows"
+        ],
+        tips: "The chestnut honey is dark and rich - locals love it with aged cheese"
+    },
+    {
+        id: 39,
+        name: "Macelleria Sociale",
+        category: "food",
+        type: "Butcher Co-op",
+        icon: "🥩",
+        lat: 45.5385,
+        lng: 10.2158,
+        description: "Butcher cooperative with local, pasture-raised meat. Perfect for buying supplies for 'spiedo' (local rotisserie).",
+        details: [
+            "🕐 Tue-Sat: 8:00-13:00, 16:30-19:30",
+            "🐄 Local farms only",
+            "🥩 Excellent quality",
+            "💬 Helpful staff"
+        ],
+        tips: "Ask about 'spiedo' cuts - they'll explain the traditional preparation"
+    },
+    {
+        id: 40,
+        name: "Gelateria Artigiana Cioccolat",
+        category: "food",
+        type: "Artisan Gelato",
+        icon: "🍨",
+        lat: 45.5395,
+        lng: 10.2185,
+        description: "Tiny gelateria making small-batch gelato daily. Real ingredients, creative flavors. Often a queue of locals.",
+        details: [
+            "🕐 Daily: 12:00-23:00 (summer)",
+            "🍨 Made fresh daily",
+            "🌰 Try: Marrons glacés",
+            "💰 €2.50 for cone"
+        ],
+        tips: "The pistachio is incredible, but the ricotta with fig is a hidden treasure"
+    },
+    {
+        id: 41,
+        name: "Pasta Fresca da Nonna Rosa",
+        category: "food",
+        type: "Fresh Pasta Shop",
+        icon: "🍝",
+        lat: 45.5376,
+        lng: 10.2199,
+        description: "Grandmother Rosa makes pasta by hand every morning. Casoncelli (local ravioli), tagliatelle, and filled pastas.",
+        details: [
+            "🕐 Mon-Sat: 8:30-12:30",
+            "👵 Handmade daily",
+            "🥟 Local specialties",
+            "💰 Affordable portions"
+        ],
+        tips: "Buy casoncelli and cook at your accommodation - she includes butter & sage"
+    },
+    {
+        id: 42,
+        name: "Norcineria del Centro",
+        category: "food",
+        type: "Cured Meats Shop",
+        icon: "🥓",
+        lat: 45.5392,
+        lng: 10.2172,
+        description: "Specializes in cured meats and sausages. Vacuum-packing available. Perfect picnic supplies.",
+        details: [
+            "🕐 Mon-Sat: 9:00-13:00, 16:00-19:30",
+            "🥓 House-cured meats",
+            "📦 Vacuum packing",
+            "🎁 Gift packages"
+        ],
+        tips: "The coppa and bresaola are exceptional - ask for thin slicing"
+    },
+    {
+        id: 43,
+        name: "Erbette e Spezie",
+        category: "food",
+        type: "Herb & Spice Shop",
+        icon: "🌿",
+        lat: 45.5383,
+        lng: 10.2181,
+        description: "Tiny shop selling local herbs, mountain teas, and spices. Everything from wild mint to rare medicinal plants.",
+        details: [
+            "🕐 Tue-Sat: 10:00-13:00, 16:00-19:00",
+            "🌿 Wild-harvested herbs",
+            "☕ Mountain herbal teas",
+            "💊 Natural remedies"
+        ],
+        tips: "Buy the 'alpine tisane' blend - perfect for evening relaxation after walking"
+    },
+    {
+        id: 44,
+        name: "Cascina San Zeno - Farmstand",
+        category: "food",
+        type: "Farm Products",
+        icon: "🥚",
+        lat: 45.5412,
+        lng: 10.2165,
+        description: "Urban farm selling eggs, vegetables, and preserves. All from their small holding just outside the city.",
+        details: [
+            "📅 Wednesday & Saturday",
+            "🕐 8:00-12:00",
+            "🥚 Fresh eggs daily",
+            "🥒 Seasonal vegetables & preserves"
+        ],
+        tips: "The fruit preserves are wonderful - try the plum jam"
+    },
+
+    // ========== MORE WALKING ROUTES ==========
+    {
+        id: 45,
+        name: "Artisan Quarter Wander",
+        category: "walks",
+        type: "Craft District",
+        icon: "🎨",
+        lat: 45.5375,
+        lng: 10.2180,
+        description: "2.5km loop through the old artisan district. Pass workshops of furniture restorers, bookbinders, violin makers, and more.",
+        details: [
+            "📏 Distance: 2.5 km",
+            "⏱️ Duration: 1.5-2 hours",
+            "🎯 Difficulty: Easy",
+            "🛠️ Active workshops",
+            "📸 Photogenic streets",
+            "☕ Artisan cafés"
+        ],
+        tips: "Weekday mornings workshops are active - you'll see craftspeople at work"
+    },
+    {
+        id: 46,
+        name: "Dawn Market to Castle Walk",
+        category: "walks",
+        type: "Early Morning Route",
+        icon: "🌅",
+        lat: 45.5398,
+        lng: 10.2179,
+        description: "Early morning 4km route combining market visit, breakfast stops, and castle sunrise. Best on market days.",
+        details: [
+            "📏 Distance: 4 km",
+            "⏱️ Duration: 2-3 hours (with stops)",
+            "🎯 Difficulty: Easy-Moderate",
+            "🌅 Start: 6:30am",
+            "🥐 Multiple food stops",
+            "🏰 Ends at castle for sunrise"
+        ],
+        tips: "Start at market, buy breakfast supplies, eat at castle viewpoint - magical!"
+    },
+    {
+        id: 47,
+        name: "Lake Garda Trail Connection",
+        category: "walks",
+        type: "Long Distance Path",
+        icon: "🥾",
+        lat: 45.5180,
+        lng: 10.2045,
+        description: "10km route connecting Brescia to the Lake Garda trail system. For serious walkers. Public transport return.",
+        details: [
+            "📏 Distance: 10 km one-way",
+            "⏱️ Duration: 3-3.5 hours",
+            "🎯 Difficulty: Moderate-Challenging",
+            "🚌 Bus return available",
+            "🏞️ Rural landscapes",
+            "💦 Limited water sources"
+        ],
+        tips: "Take bus back from Lonato. Spring and autumn best. Bring packed lunch."
+    },
+    {
+        id: 48,
+        name: "Franciacorta Vineyard Approach",
+        category: "walks",
+        type: "Vineyard Trail",
+        icon: "🍇",
+        lat: 45.5590,
+        lng: 10.1980,
+        description: "7km walk toward famous Franciacorta wine region. Vineyards, small wineries, rolling hills.",
+        details: [
+            "📏 Distance: 7 km one-way",
+            "⏱️ Duration: 2.5 hours",
+            "🎯 Difficulty: Moderate",
+            "🍷 Pass several wineries",
+            "🚌 Bus return from Erbusco",
+            "📸 Beautiful landscapes"
+        ],
+        tips: "Some wineries allow walk-in tastings - bring ID and cash. Best Sept-Oct harvest"
     }
 ];
 
