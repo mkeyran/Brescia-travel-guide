@@ -46,33 +46,105 @@ function initializeMap() {
 }
 
 function addMarkers(places) {
-    // Clear existing markers
-    markers.forEach(marker => marker.remove());
+    // Clear existing markers and routes
+    markers.forEach(item => {
+        if (item.marker) item.marker.remove();
+        if (item.polyline) item.polyline.remove();
+        if (item.startMarker) item.startMarker.remove();
+        if (item.endMarker) item.endMarker.remove();
+    });
     markers = [];
 
     places.forEach(place => {
-        // Create custom icon based on category
-        const icon = L.divIcon({
-            className: 'custom-marker',
-            html: `<div class="marker-pin" style="background-color: ${CATEGORIES[place.category].color}">
-                     <span class="marker-icon">${place.icon}</span>
-                   </div>`,
-            iconSize: [40, 40],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40]
-        });
+        // Check if this is a walking route with a path
+        if (place.route && place.route.length > 1) {
+            // Draw the route as a polyline
+            const polyline = L.polyline(place.route, {
+                color: CATEGORIES[place.category].color,
+                weight: 4,
+                opacity: 0.8,
+                smoothFactor: 1
+            }).addTo(map);
 
-        // Create marker
-        const marker = L.marker([place.lat, place.lng], { icon })
-            .addTo(map)
-            .bindPopup(createPopupContent(place));
+            // Add popup to polyline
+            polyline.bindPopup(createPopupContent(place));
+            polyline.on('click', () => {
+                openPlaceModal(place);
+            });
 
-        // Add click handler
-        marker.on('click', () => {
-            openPlaceModal(place);
-        });
+            // Add start marker (green flag)
+            const startIcon = L.divIcon({
+                className: 'route-marker',
+                html: `<div class="route-marker-pin start" style="background-color: ${CATEGORIES[place.category].color}">
+                         <span class="route-marker-icon">🚩</span>
+                       </div>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
 
-        markers.push({ marker, place });
+            const startMarker = L.marker(place.route[0], { icon: startIcon })
+                .addTo(map)
+                .bindPopup(`<strong>START:</strong> ${place.name}`);
+
+            startMarker.on('click', () => {
+                openPlaceModal(place);
+            });
+
+            // Add end marker for one-way routes (checkered flag)
+            let endMarker = null;
+            const isLoop = place.route[0][0] === place.route[place.route.length - 1][0] &&
+                          place.route[0][1] === place.route[place.route.length - 1][1];
+
+            if (!isLoop) {
+                const endIcon = L.divIcon({
+                    className: 'route-marker',
+                    html: `<div class="route-marker-pin end" style="background-color: ${CATEGORIES[place.category].color}">
+                             <span class="route-marker-icon">🏁</span>
+                           </div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                });
+
+                endMarker = L.marker(place.route[place.route.length - 1], { icon: endIcon })
+                    .addTo(map)
+                    .bindPopup(`<strong>END:</strong> ${place.name}`);
+
+                endMarker.on('click', () => {
+                    openPlaceModal(place);
+                });
+            }
+
+            markers.push({
+                polyline,
+                startMarker,
+                endMarker,
+                place
+            });
+
+        } else {
+            // Regular point marker (not a route)
+            const icon = L.divIcon({
+                className: 'custom-marker',
+                html: `<div class="marker-pin" style="background-color: ${CATEGORIES[place.category].color}">
+                         <span class="marker-icon">${place.icon}</span>
+                       </div>`,
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40]
+            });
+
+            const marker = L.marker([place.lat, place.lng], { icon })
+                .addTo(map)
+                .bindPopup(createPopupContent(place));
+
+            marker.on('click', () => {
+                openPlaceModal(place);
+            });
+
+            markers.push({ marker, place });
+        }
     });
 }
 
@@ -143,11 +215,29 @@ function applyFilters() {
 function updateMarkerVisibility(visiblePlaces) {
     const visibleIds = visiblePlaces.map(p => p.id);
 
-    markers.forEach(({ marker, place }) => {
-        if (visibleIds.includes(place.id)) {
-            marker.addTo(map);
-        } else {
-            marker.remove();
+    markers.forEach(item => {
+        const isVisible = visibleIds.includes(item.place.id);
+
+        // Handle regular markers
+        if (item.marker) {
+            if (isVisible) {
+                item.marker.addTo(map);
+            } else {
+                item.marker.remove();
+            }
+        }
+
+        // Handle route polylines and markers
+        if (item.polyline) {
+            if (isVisible) {
+                item.polyline.addTo(map);
+                if (item.startMarker) item.startMarker.addTo(map);
+                if (item.endMarker) item.endMarker.addTo(map);
+            } else {
+                item.polyline.remove();
+                if (item.startMarker) item.startMarker.remove();
+                if (item.endMarker) item.endMarker.remove();
+            }
         }
     });
 }
@@ -155,8 +245,21 @@ function updateMarkerVisibility(visiblePlaces) {
 function fitMapToPlaces(places) {
     if (places.length === 0) return;
 
-    const bounds = L.latLngBounds(places.map(p => [p.lat, p.lng]));
-    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+    const bounds = L.latLngBounds();
+
+    places.forEach(place => {
+        if (place.route && place.route.length > 1) {
+            // For routes, include all waypoints
+            place.route.forEach(coord => bounds.extend(coord));
+        } else {
+            // For regular markers, include the point
+            bounds.extend([place.lat, place.lng]);
+        }
+    });
+
+    if (bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+    }
 }
 
 // ==================== DISPLAY PLACES LIST ====================
@@ -488,6 +591,46 @@ style.textContent = `
         justify-content: center;
         transform: rotate(45deg);
         font-size: 1.2rem;
+    }
+
+    /* Route markers */
+    .route-marker {
+        background: none;
+        border: none;
+    }
+
+    .route-marker-pin {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -14px 0 0 -14px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid white;
+    }
+
+    .route-marker-pin:hover {
+        transform: scale(1.15);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    }
+
+    .route-marker-icon {
+        font-size: 1rem;
+    }
+
+    /* Polyline styling */
+    .leaflet-interactive {
+        cursor: pointer;
+    }
+
+    .leaflet-interactive:hover {
+        stroke-width: 6;
     }
 
     .user-marker {

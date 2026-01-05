@@ -298,7 +298,19 @@ const placesData = [
             "🏛️ Passes 8 historical sites",
             "☕ Café stops available"
         ],
-        tips: "Start at Piazza della Loggia, wind through Vicolo delle Stelle, end at Piazza Vittoria. Perfect morning or evening walk."
+        tips: "Start at Piazza della Loggia, wind through Vicolo delle Stelle, end at Piazza Vittoria. Perfect morning or evening walk.",
+        route: [
+            [45.5402, 10.2183], // Start: Piazza della Loggia
+            [45.5396, 10.2192], // Vicolo delle Stelle
+            [45.5388, 10.2167], // Piazzetta Bruno Boni
+            [45.5382, 10.2187], // Vicolo del Forno
+            [45.5375, 10.2195], // Historic quarter
+            [45.5381, 10.2145], // San Cristo area
+            [45.5390, 10.2155], // Residential streets
+            [45.5405, 10.2170], // Via Musei
+            [45.5410, 10.2190], // Piazza Vittoria
+            [45.5402, 10.2183]  // Back to start
+        ]
     },
     {
         id: 18,
@@ -317,7 +329,16 @@ const placesData = [
             "🌳 Shaded most of the way",
             "💦 Bring water"
         ],
-        tips: "Take Via Piamarta for the prettiest route. Multiple benches for breaks. Return via different path for variety."
+        tips: "Take Via Piamarta for the prettiest route. Multiple benches for breaks. Return via different path for variety.",
+        route: [
+            [45.5405, 10.2188], // Start: Via Musei
+            [45.5410, 10.2185], // Start of climb
+            [45.5415, 10.2180], // Via Piamarta
+            [45.5422, 10.2175], // Midway climb
+            [45.5428, 10.2170], // Upper path
+            [45.5435, 10.2180], // Approach castle
+            [45.5443, 10.2198]  // Castle entrance
+        ]
     },
     {
         id: 19,
@@ -336,7 +357,15 @@ const placesData = [
             "🦆 Wildlife spotting",
             "🚲 Bike-friendly too"
         ],
-        tips: "Access from Viale Bornata. Perfect for longer walks. Bring binoculars for bird watching!"
+        tips: "Access from Viale Bornata. Perfect for longer walks. Bring binoculars for bird watching!",
+        route: [
+            [45.5350, 10.2095], // Start: Viale Bornata
+            [45.5330, 10.2090], // Along river
+            [45.5310, 10.2089], // Mid-trail
+            [45.5290, 10.2087], // Continue south
+            [45.5270, 10.2085], // Natural area
+            [45.5250, 10.2080], // End point
+        ]
     },
     {
         id: 20,
@@ -355,7 +384,18 @@ const placesData = [
             "🏘️ Authentic neighborhoods",
             "📸 Multiple viewpoints"
         ],
-        tips: "Start from Via Panoramica. Morning light is beautiful on the vineyards. Quiet on weekdays."
+        tips: "Start from Via Panoramica. Morning light is beautiful on the vineyards. Quiet on weekdays.",
+        route: [
+            [45.5450, 10.2250], // Start: Ronchi
+            [45.5460, 10.2270], // Residential area
+            [45.5470, 10.2240], // Vineyard path
+            [45.5465, 10.2210], // Approach castle
+            [45.5455, 10.2195], // Castle grounds
+            [45.5443, 10.2198], // Castle viewpoint
+            [45.5435, 10.2220], // Return path
+            [45.5445, 10.2245], // Back through neighborhood
+            [45.5450, 10.2250]  // Return to start
+        ]
     },
     {
         id: 21,
@@ -374,7 +414,18 @@ const placesData = [
             "⛰️ Rolling hills",
             "🦊 Occasional wildlife"
         ],
-        tips: "Best in spring and autumn. Bring snacks and water. Some sections can be muddy after rain."
+        tips: "Best in spring and autumn. Bring snacks and water. Some sections can be muddy after rain.",
+        route: [
+            [45.5465, 10.2205], // Start: Main park entrance
+            [45.5475, 10.2215], // North through park
+            [45.5485, 10.2218], // Forest section
+            [45.5488, 10.2200], // East side woods
+            [45.5480, 10.2185], // Southeast path
+            [45.5468, 10.2180], // South through forest
+            [45.5458, 10.2195], // Southwest woods
+            [45.5460, 10.2210], // Return via west
+            [45.5465, 10.2205]  // Back to start
+        ]
     },
     {
         id: 22,
@@ -393,7 +444,17 @@ const placesData = [
             "📚 Very educational",
             "🎟️ Some sites have entry fees"
         ],
-        tips: "Get early to beat crowds at Capitolium. Free entry first Sunday of month. Good audio guides available."
+        tips: "Get early to beat crowds at Capitolium. Free entry first Sunday of month. Good audio guides available.",
+        route: [
+            [45.5405, 10.2188], // Start: Via Musei area (Capitolium district)
+            [45.5410, 10.2183], // Along Via Musei
+            [45.5415, 10.2177], // Toward castle approach
+            [45.5420, 10.2172], // Via Piamarta ascent
+            [45.5428, 10.2168], // Medieval street level
+            [45.5435, 10.2175], // Historic buildings
+            [45.5441, 10.2188], // Castle grounds approach
+            [45.5443, 10.2198]  // Castle viewpoint/entrance
+        ]
     },
     {
         id: 23,
@@ -412,7 +473,17 @@ const placesData = [
             "🏃‍♀️ Jogging paths",
             "🧺 Picnic areas with tables"
         ],
-        tips: "Perfect for relaxed afternoon stroll. Ice cream vendor on weekends. Good for families."
+        tips: "Perfect for relaxed afternoon stroll. Ice cream vendor on weekends. Good for families.",
+        route: [
+            [45.5520, 10.2345], // Start: Main park entrance
+            [45.5525, 10.2355], // Along east path
+            [45.5530, 10.2352], // Duck ponds area
+            [45.5528, 10.2335], // South through meadow
+            [45.5520, 10.2328], // Playground area
+            [45.5515, 10.2335], // West side path
+            [45.5515, 10.2348], // Jogging path return
+            [45.5520, 10.2345]  // Back to entrance
+        ]
     },
     {
         id: 24,
@@ -431,7 +502,19 @@ const placesData = [
             "🫒 Olive groves",
             "⛪ Historic chapels"
         ],
-        tips: "Bring good shoes and plenty of water. Incredible on clear days - Alps visible. Best spring/autumn."
+        tips: "Bring good shoes and plenty of water. Incredible on clear days - Alps visible. Best spring/autumn.",
+        route: [
+            [45.5580, 10.2420], // Start: Trail head (northeastern hills)
+            [45.5585, 10.2430], // Initial climb
+            [45.5590, 10.2440], // Higher elevation through olive groves
+            [45.5600, 10.2445], // Chapel area with views
+            [45.5610, 10.2440], // Peak section
+            [45.5608, 10.2420], // Alpine vista area
+            [45.5600, 10.2410], // Descent path through groves
+            [45.5590, 10.2405], // Mid-descent
+            [45.5585, 10.2415], // Final return section
+            [45.5580, 10.2420]  // Back to trail head
+        ]
     },
     {
         id: 25,
@@ -450,7 +533,17 @@ const placesData = [
             "🌸 Private gardens visible",
             "📷 Photogenic streets"
         ],
-        tips: "Lovely in spring when gardens bloom. Very quiet area. Good for early morning walks."
+        tips: "Lovely in spring when gardens bloom. Very quiet area. Good for early morning walks.",
+        route: [
+            [45.5355, 10.2230], // Start: Garden district entrance
+            [45.5358, 10.2240], // Along residential avenue
+            [45.5365, 10.2245], // Art Nouveau villas
+            [45.5370, 10.2235], // Garden section of street
+            [45.5368, 10.2220], // Through quiet neighborhood
+            [45.5360, 10.2218], // Among gardens
+            [45.5355, 10.2225], // Return path
+            [45.5355, 10.2230]  // Back to start
+        ]
     },
 
     // ========== MORE HIDDEN GEMS & ATTRACTIONS ==========
@@ -800,7 +893,18 @@ const placesData = [
             "📸 Photogenic streets",
             "☕ Artisan cafés"
         ],
-        tips: "Weekday mornings workshops are active - you'll see craftspeople at work"
+        tips: "Weekday mornings workshops are active - you'll see craftspeople at work",
+        route: [
+            [45.5375, 10.2180], // Start: Artisan quarter entrance
+            [45.5378, 10.2190], // Bookbinder's street
+            [45.5385, 10.2195], // Through workshop district
+            [45.5388, 10.2185], // Central artisan area
+            [45.5383, 10.2175], // Craft maker lane
+            [45.5378, 10.2172], // Furniture restoration
+            [45.5370, 10.2180], // Violin maker area
+            [45.5373, 10.2188], // Through center
+            [45.5375, 10.2180]  // Back to start
+        ]
     },
     {
         id: 46,
@@ -819,7 +923,18 @@ const placesData = [
             "🥐 Multiple food stops",
             "🏰 Ends at castle for sunrise"
         ],
-        tips: "Start at market, buy breakfast supplies, eat at castle viewpoint - magical!"
+        tips: "Start at market, buy breakfast supplies, eat at castle viewpoint - magical!",
+        route: [
+            [45.5398, 10.2179], // Start: Market area
+            [45.5402, 10.2183], // Piazza della Loggia market
+            [45.5405, 10.2180], // First café stop area
+            [45.5410, 10.2185], // Toward castle path
+            [45.5418, 10.2175], // Climb begins
+            [45.5425, 10.2170], // Mid-climb
+            [45.5435, 10.2180], // Upper path
+            [45.5440, 10.2195], // Approach castle grounds
+            [45.5443, 10.2198]  // Castle viewpoint/sunrise spot
+        ]
     },
     {
         id: 47,
@@ -838,7 +953,19 @@ const placesData = [
             "🏞️ Rural landscapes",
             "💦 Limited water sources"
         ],
-        tips: "Take bus back from Lonato. Spring and autumn best. Bring packed lunch."
+        tips: "Take bus back from Lonato. Spring and autumn best. Bring packed lunch.",
+        route: [
+            [45.5180, 10.2045], // Start: South Brescia area
+            [45.5170, 10.2050], // Heading south
+            [45.5155, 10.2055], // Rural transition
+            [45.5140, 10.2060], // Agricultural lands
+            [45.5125, 10.2060], // Toward Lonato region
+            [45.5110, 10.2065], // Approaching plains
+            [45.5095, 10.2070], // Near Garda influence area
+            [45.5080, 10.2070], // Trail junction area
+            [45.5065, 10.2075], // Garda connection point
+            [45.5050, 10.2080]  // Final trail system link
+        ]
     },
     {
         id: 48,
@@ -857,7 +984,16 @@ const placesData = [
             "🚌 Bus return from Erbusco",
             "📸 Beautiful landscapes"
         ],
-        tips: "Some wineries allow walk-in tastings - bring ID and cash. Best Sept-Oct harvest"
+        tips: "Some wineries allow walk-in tastings - bring ID and cash. Best Sept-Oct harvest",
+        route: [
+            [45.5590, 10.1980], // Start: Brescia northeast area toward wine region
+            [45.5585, 10.1970], // Initial descent
+            [45.5575, 10.1955], // First vineyard area
+            [45.5560, 10.1940], // Through vineyards (winery #1)
+            [45.5545, 10.1930], // Rolling wine hills
+            [45.5530, 10.1925], // Franciacorta region center
+            [45.5515, 10.1920]  // Final winery area/Erbusco approach
+        ]
     }
 ];
 
