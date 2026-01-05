@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Discover hidden gems, walking routes, and authentic local cuisine in Brescia, Italy">
+    <meta name="theme-color" content="#2c5f8d">
+    <title>Brescia Walking Guide - Hidden Gems & Local Flavors</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">🏔️ Brescia Guide</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="welcome-section">
+                <h2>Welcome Explorer! 🚶</h2>
+                <p>Discover Brescia's hidden treasures, authentic flavors, and scenic walking routes.</p>
+            </div>
+
+            <!-- Search -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search places..." aria-label="Search places">
+                <button id="searchBtn" aria-label="Search">🔍</button>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="filters">
+                <h3>What are you looking for?</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-category="all">
+                        <span class="icon">✨</span> All
+                    </button>
+                    <button class="filter-btn" data-category="attractions">
+                        <span class="icon">🏛️</span> Hidden Gems
+                    </button>
+                    <button class="filter-btn" data-category="food">
+                        <span class="icon">🥖</span> Local Food
+                    </button>
+                    <button class="filter-btn" data-category="walks">
+                        <span class="icon">🥾</span> Walking Routes
+                    </button>
+                    <button class="filter-btn" data-category="viewpoints">
+                        <span class="icon">🌄</span> Viewpoints
+                    </button>
+                </div>
+            </div>
+
+            <!-- Places List -->
+            <div class="places-list" id="placesList">
+                <h3>Places <span id="placesCount">(0)</span></h3>
+                <div id="placesContainer"></div>
+            </div>
+
+            <!-- User Location -->
+            <div class="location-controls">
+                <button class="btn-primary" id="locateBtn">
+                    <span>📍</span> Find My Location
+                </button>
+            </div>
+
+            <!-- Info -->
+            <div class="info-section">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Click markers to see details</li>
+                    <li>Use filters to find what you love</li>
+                    <li>Walking routes show distance & time</li>
+                    <li>Best explored on foot!</li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Map Container -->
+    <main class="map-container">
+        <div id="map"></div>
+
+        <!-- Floating Controls -->
+        <div class="map-controls">
+            <button class="control-btn" id="zoomIn" aria-label="Zoom in">+</button>
+            <button class="control-btn" id="zoomOut" aria-label="Zoom out">−</button>
+            <button class="control-btn" id="centerMap" aria-label="Center map">⌖</button>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading map...</p>
+        </div>
+    </main>
+
+    <!-- Place Detail Modal -->
+    <div class="modal" id="placeModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- App JS -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

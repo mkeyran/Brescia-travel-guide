@@ -1,0 +1,21 @@
+{
+  "name": "Brescia Walking Guide",
+  "short_name": "Brescia Guide",
+  "description": "Discover hidden gems, walking routes, and authentic local cuisine in Brescia, Italy",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c5f8d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "lifestyle", "navigation"],
+  "lang": "en",
+  "dir": "ltr"
+}
