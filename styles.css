@@ -302,6 +302,25 @@ body {
     gap: 0.25rem;
 }
 
+/* Distance Badge */
+.distance-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--accent-color);
+    color: white;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.place-card-header {
+    position: relative;
+}
+
 /* Location Controls */
 .location-controls {
     margin-bottom: 1.5rem;
@@ -334,6 +353,24 @@ body {
 
 .btn-primary span {
     font-size: 1.2rem;
+}
+
+.btn-primary.tracking {
+    background: #e74c3c;
+    animation: pulse-tracking 2s infinite;
+}
+
+.btn-primary.tracking:hover {
+    background: #c0392b;
+}
+
+@keyframes pulse-tracking {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+    }
 }
 
 /* Info Section */

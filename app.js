@@ -6,6 +6,9 @@ let map;
 let markers = [];
 let currentCategory = 'all';
 let userMarker = null;
+let userAccuracyCircle = null;
+let userPosition = null;
+let watchId = null;
 let searchTerm = '';
 
 // ==================== INITIALIZATION ====================
@@ -397,6 +400,13 @@ function getDirections(lat, lng) {
 
 function locateUser() {
     const btn = document.getElementById('locateBtn');
+
+    // If already tracking, stop tracking
+    if (watchId !== null) {
+        stopTracking();
+        return;
+    }
+
     btn.innerHTML = '<span>⏳</span> Finding location...';
     btn.disabled = true;
 
@@ -406,37 +416,38 @@ function locateUser() {
         return;
     }
 
+    // Get initial position
     navigator.geolocation.getCurrentPosition(
         (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+            updateUserPosition(position);
+            btn.innerHTML = '<span>🔴</span> Tracking On';
+            btn.disabled = false;
+            btn.classList.add('tracking');
 
-            // Remove old user marker if exists
-            if (userMarker) {
-                userMarker.remove();
-            }
-
-            // Add user location marker
-            const icon = L.divIcon({
-                className: 'user-marker',
-                html: '<div class="user-marker-dot">📍</div>',
-                iconSize: [30, 30],
-                iconAnchor: [15, 15]
-            });
-
-            userMarker = L.marker([lat, lng], { icon })
-                .addTo(map)
-                .bindPopup('You are here! 📍');
-
-            // Pan to user location
-            map.setView([lat, lng], 15, { animate: true });
-
-            btn.innerHTML = '<span>✅</span> Location Found';
-            setTimeout(resetLocateButton, 2000);
+            // Start continuous tracking
+            watchId = navigator.geolocation.watchPosition(
+                updateUserPosition,
+                (error) => {
+                    console.error('Error tracking location:', error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
         },
         (error) => {
             console.error('Error getting location:', error);
-            alert('Could not get your location. Please enable location services.');
+            let errorMsg = 'Could not get your location. ';
+            if (error.code === 1) {
+                errorMsg += 'Please enable location permissions.';
+            } else if (error.code === 2) {
+                errorMsg += 'Position unavailable.';
+            } else if (error.code === 3) {
+                errorMsg += 'Request timeout.';
+            }
+            alert(errorMsg);
             resetLocateButton();
         },
         {
@@ -447,10 +458,143 @@ function locateUser() {
     );
 }
 
+function updateUserPosition(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const accuracy = position.coords.accuracy;
+
+    // Store user position
+    userPosition = { lat, lng };
+
+    // Remove old markers/circles
+    if (userMarker) userMarker.remove();
+    if (userAccuracyCircle) userAccuracyCircle.remove();
+
+    // Add accuracy circle
+    userAccuracyCircle = L.circle([lat, lng], {
+        radius: accuracy,
+        color: '#27ae60',
+        fillColor: '#27ae60',
+        fillOpacity: 0.1,
+        weight: 2
+    }).addTo(map);
+
+    // Add user location marker
+    const icon = L.divIcon({
+        className: 'user-marker',
+        html: '<div class="user-marker-dot">📍</div>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
+
+    // Find nearest place
+    const nearestPlace = findNearestPlace(lat, lng);
+    const nearestDistance = nearestPlace ? calculateDistance(lat, lng, nearestPlace.lat, nearestPlace.lng) : null;
+
+    let popupContent = `
+        <div style="text-align: center;">
+            <strong>You are here! 📍</strong><br>
+            <small>Accuracy: ±${Math.round(accuracy)}m</small>
+    `;
+
+    if (nearestPlace && nearestDistance) {
+        popupContent += `
+            <br><br>
+            <strong>Nearest:</strong><br>
+            ${nearestPlace.icon} ${nearestPlace.name}<br>
+            <span style="color: var(--primary-color); font-weight: bold;">
+                ${formatDistance(nearestDistance)} away
+            </span><br>
+            <button onclick="showOnMap(${nearestPlace.id})" class="popup-btn" style="margin-top: 0.5rem;">
+                Show →
+            </button>
+        `;
+    }
+
+    popupContent += '</div>';
+
+    userMarker = L.marker([lat, lng], { icon })
+        .addTo(map)
+        .bindPopup(popupContent)
+        .openPopup();
+
+    // Pan to user location (only first time or if far away)
+    if (!map.getBounds().contains([lat, lng]) || !userPosition) {
+        map.setView([lat, lng], 15, { animate: true });
+    }
+
+    // Update distances in place cards
+    updatePlaceDistances(lat, lng);
+}
+
+function stopTracking() {
+    if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+    }
+    resetLocateButton();
+}
+
 function resetLocateButton() {
     const btn = document.getElementById('locateBtn');
     btn.innerHTML = '<span>📍</span> Find My Location';
     btn.disabled = false;
+    btn.classList.remove('tracking');
+}
+
+function findNearestPlace(lat, lng) {
+    let nearest = null;
+    let minDistance = Infinity;
+
+    placesData.forEach(place => {
+        const distance = calculateDistance(lat, lng, place.lat, place.lng);
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearest = place;
+        }
+    });
+
+    return nearest;
+}
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+    // Haversine formula for distance calculation
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+}
+
+function formatDistance(km) {
+    if (km < 1) {
+        return `${Math.round(km * 1000)}m`;
+    }
+    return `${km.toFixed(1)}km`;
+}
+
+function updatePlaceDistances(userLat, userLng) {
+    if (!userLat || !userLng) return;
+
+    const placeCards = document.querySelectorAll('.place-card');
+    placeCards.forEach((card, index) => {
+        const place = placesData.find(p => p.name === card.querySelector('h4')?.textContent);
+        if (place) {
+            const distance = calculateDistance(userLat, userLng, place.lat, place.lng);
+
+            // Add or update distance badge
+            let distanceBadge = card.querySelector('.distance-badge');
+            if (!distanceBadge) {
+                distanceBadge = document.createElement('div');
+                distanceBadge.className = 'distance-badge';
+                card.querySelector('.place-card-header').appendChild(distanceBadge);
+            }
+            distanceBadge.textContent = formatDistance(distance);
+        }
+    });
 }
 
 // ==================== MAP CONTROLS ====================
