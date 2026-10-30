@@ -1,162 +1,61 @@
-# 🏔️ Brescia Walking Guide
+# Brescia on Foot
 
-A rich, mobile-friendly web application for exploring Brescia, Italy - designed for travelers who love hidden gems, local cuisine, and walking adventures.
+A mobile-friendly walking map of Brescia for people who like long walks, local food shops and markets, and the less obvious corners of a city.
 
-## ✨ Features
+**All places and trails come from [OpenStreetMap](https://www.openstreetmap.org/).** None are added by hand. The site is rebuilt every week with fresh data, and each place links to its OpenStreetMap entry so you can check it there or fix it.
 
-### 🗺️ Interactive Map
-- **OpenStreetMap** integration via Leaflet.js
-- Custom markers for different place categories
-- Smooth zoom and pan controls
-- Mobile-optimized touch gestures
+## What it shows
 
-### 🚶 Walking Routes
-- **9 curated walking routes** ranging from easy strolls to challenging treks
-- Distance, duration, and difficulty ratings
-- Scenic paths through medieval quarters, riverside trails, and hill climbs
-- Perfect for exploring Brescia on foot
+| Layer | OpenStreetMap source |
+|---|---|
+| 🥾 Trails | Hiking and foot route relations (CAI trails etc.), with their real geometry |
+| 🧀 Food shops & markets | Bakeries, pasticcerie, cheese shops, delis, greengrocers, butchers, enoteche, pastifici, gelaterie, markets… (no restaurants) |
+| 🏛️ Heritage | Named historic features, museums, churches with a Wikidata entry, fountains |
+| 🌄 Views & parks | Viewpoints, picnic spots, named parks and nature reserves |
+| 🎨 Art | Named artworks: murals, statues, sculptures |
+| 🚰 Water & WC | Drinking fountains and public toilets |
 
-### 🏛️ Hidden Gems
-- **Lesser-known attractions** away from tourist crowds
-- Medieval alleys, quiet monasteries, and secret squares
-- Local viewpoints with stunning panoramas
-- Authentic neighborhoods and historic sites
+## Features
 
-### 🥖 Local Food (No Restaurants!)
-- **Markets, bakeries, and delis** where locals shop
-- Fresh produce stands and traditional pastry shops
-- Cheese shops, wine stores, and focaccerias
-- Perfect for picnic supplies and authentic experiences
+- Trails drawn along their real paths, coloured by CAI difficulty (T / E / EE), with **GPX download** for offline hiking apps
+- **Live location**: a blue dot with an accuracy circle; the list sorts by distance from you
+- **My walk**: collect stops and open them as a walking route in Google Maps
+- Walking directions to any place or to the nearest point of a trail
+- Search, category filters, and shareable links (`#node/123`)
+- Works offline after the first visit (the app and data are cached, plus any map tiles you have looked at); can be installed on a phone's home screen
 
-### 📱 Mobile-First Design
-- Fully responsive on all devices
-- Touch-friendly interface
-- PWA-ready for installation on mobile
-- Geolocation support to find places near you
+## Deploying to GitHub Pages
 
-### 🔍 Search & Filter
-- Filter by category (attractions, food, walks, viewpoints)
-- Real-time search across all places
-- Easy-to-use category buttons
-- Dynamic place list with detailed cards
+1. In the repository go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. Push to `main` (or to `claude/brescia-travel-guide-app-7yIFz`), or run the **Build and deploy to GitHub Pages** workflow from the **Actions** tab.
+3. The workflow runs the tests, downloads the current OpenStreetMap data, builds `_site/` and publishes it at `https://<user>.github.io/Brescia-travel-guide/`.
 
-## 🚀 Live Demo
+The workflow also runs every Monday to refresh the data. If the data download fails or returns suspiciously little (fewer than 50 places), the build stops and the site that is already live stays as it is.
 
-Visit the app: [Your GitHub Pages URL]
+If deploying from a non-default branch is rejected, open **Settings → Environments → github-pages** and allow that branch.
 
-## 🛠️ Technology Stack
+## Local development
 
-- **HTML5** - Semantic structure
-- **CSS3** - Modern styling with CSS variables
-- **Vanilla JavaScript** - No frameworks, pure performance
-- **Leaflet.js** - Interactive maps
-- **OpenStreetMap** - Map tiles
-- **Progressive Web App** - Mobile installation support
-
-## 📦 Local Development
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/Brescia-travel-guide.git
-   cd Brescia-travel-guide
-   ```
-
-2. Open in your browser:
-   ```bash
-   # Simple HTTP server with Python
-   python -m http.server 8000
-   # Or with Node.js
-   npx serve
-   ```
-
-3. Visit `http://localhost:8000`
-
-## 🌍 Deployment
-
-### GitHub Pages
-
-The app is deployed automatically via GitHub Pages:
-
-1. Push to the main branch
-2. GitHub Actions will deploy automatically
-3. Access at `https://yourusername.github.io/Brescia-travel-guide/`
-
-### Manual Deployment
-
-Simply upload all files to any static hosting service:
-- Netlify
-- Vercel
-- Cloudflare Pages
-- Any web server
-
-## 📂 File Structure
-
-```
-brescia-travel-guide/
-├── index.html          # Main HTML structure
-├── styles.css          # Responsive CSS styling
-├── app.js             # Application logic
-├── data.js            # Places data (routes, attractions, food)
-├── manifest.json      # PWA manifest
-└── README.md          # Documentation
+```bash
+node --test test/*.test.mjs                     # unit tests
+node scripts/build.mjs                          # fetch live OSM data into _site/ (needs internet)
+node scripts/build.mjs --fixtures test/fixtures # or build with synthetic test data
+npx http-server _site                           # open http://localhost:8080
 ```
 
-## 🎯 Target Audience
+The files in `test/fixtures/` are made up (all names start with `TEST`) and are used only by the tests.
 
-This app is perfect for travelers who:
-- ✅ Love exploring on foot
-- ✅ Prefer local, authentic experiences
-- ✅ Want to avoid tourist traps
-- ✅ Enjoy discovering hidden gems
-- ✅ Like buying food from markets/shops (not restaurants)
-- ✅ Value detailed walking routes
+## Project layout
 
-## 🗺️ Places Included
+```
+index.html, styles.css, js/app.js   the app
+sw.js, manifest.webmanifest, icons/ offline support and installability
+scripts/osm.mjs                     Overpass queries and data transforms
+scripts/build.mjs                   builds _site/ and fetches the data
+vendor/                             Leaflet 1.9.4 and Leaflet.markercluster 1.5.3 (bundled, so no CDN is needed)
+.github/workflows/deploy.yml        tests, build and Pages deployment
+```
 
-- **Hidden Attractions**: 8 lesser-known sites
-- **Viewpoints**: 3 panoramic spots
-- **Food Locations**: 8 markets, bakeries, and shops
-- **Walking Routes**: 9 routes (3-8km each)
+## Data and licences
 
-## 🔄 Future Enhancements
-
-- [ ] Offline map caching
-- [ ] User reviews and ratings
-- [ ] Photo galleries for each location
-- [ ] Route tracking via GPS
-- [ ] Multiple language support
-- [ ] Weather integration
-- [ ] Downloadable walking route GPX files
-
-## 📱 Mobile Installation
-
-On iOS or Android:
-1. Open the app in your mobile browser
-2. Tap "Add to Home Screen"
-3. Launch like a native app
-
-## 🤝 Contributing
-
-Contributions are welcome! To add new places or routes:
-
-1. Edit `data.js`
-2. Follow the existing data structure
-3. Submit a pull request
-
-## 📄 License
-
-MIT License - feel free to use and modify for your own city!
-
-## 🙏 Acknowledgments
-
-- OpenStreetMap contributors
-- Leaflet.js developers
-- Local Brescian guides who shared hidden gems
-
-## 📧 Contact
-
-Questions or suggestions? Open an issue on GitHub!
-
----
-
-**Made with ❤️ for exploring Brescia on foot**
+Map data and tiles © OpenStreetMap contributors, [ODbL](https://www.openstreetmap.org/copyright). Leaflet and Leaflet.markercluster are BSD-2 and MIT licensed (see `vendor/`).

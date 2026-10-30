@@ -1,0 +1,16 @@
+{
+  "_note": "Synthetic Overpass response for tests only. Not real places.",
+  "elements": [
+    {"type": "node", "id": 1, "lat": 45.5401, "lon": 10.2201, "tags": {"shop": "bakery", "name": "TEST Bakery", "opening_hours": "Mo-Sa 07:00-13:00", "addr:street": "Via Test", "addr:housenumber": "1", "website": "example.org"}},
+    {"type": "node", "id": 2, "lat": 45.5402, "lon": 10.2202, "tags": {"shop": "bakery"}},
+    {"type": "node", "id": 3, "lat": 45.5405, "lon": 10.2190, "tags": {"amenity": "marketplace"}},
+    {"type": "node", "id": 4, "lat": 45.5430, "lon": 10.2240, "tags": {"tourism": "viewpoint", "name": "TEST Viewpoint"}},
+    {"type": "node", "id": 5, "lat": 45.5395, "lon": 10.2195, "tags": {"historic": "memorial", "memorial": "plaque", "name": "TEST Plaque"}},
+    {"type": "way", "id": 6, "center": {"lat": 45.5390, "lon": 10.2230}, "tags": {"amenity": "place_of_worship", "name": "TEST Church", "wikidata": "Q1", "wikipedia": "it:Chiesa di Test"}},
+    {"type": "node", "id": 7, "lat": 45.5385, "lon": 10.2180, "tags": {"amenity": "drinking_water"}},
+    {"type": "way", "id": 8, "center": {"lat": 45.5440, "lon": 10.2260}, "tags": {"leisure": "park", "name": "TEST Park"}},
+    {"type": "node", "id": 9, "lat": 45.5380, "lon": 10.2170, "tags": {"tourism": "artwork", "artwork_type": "mural", "name": "TEST Mural <b>x</b>"}},
+    {"type": "node", "id": 10, "lat": 45.5410, "lon": 10.2215, "tags": {"shop": "cheese", "name": "TEST Formaggi", "shop:extra": "ignored"}},
+    {"type": "way", "id": 11, "tags": {"shop": "deli", "name": "TEST no coordinates"}}
+  ]
+}
