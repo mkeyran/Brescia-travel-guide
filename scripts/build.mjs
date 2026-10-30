@@ -5,7 +5,7 @@
 
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { placesQuery, trailsQuery, transformPlaces, transformTrails } from './osm.mjs';
+import { checkOverpassResponse, placesQuery, trailsQuery, transformPlaces, transformTrails } from '../js/osm.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const OUT = join(ROOT, '_site');
@@ -34,7 +34,7 @@ async function overpass(query) {
                     body: new URLSearchParams({ data: query })
                 });
                 if (!res.ok) throw new Error(`${url} responded ${res.status}`);
-                return await res.json();
+                return checkOverpassResponse(await res.json());
             } catch (err) {
                 lastError = err;
                 console.warn(`Overpass request failed: ${err.message}`);
@@ -60,11 +60,14 @@ async function main() {
 
     const places = transformPlaces(placesJson);
     const trails = transformTrails(trailsJson);
+    console.log(`Overpass: ${placesJson.elements?.length} place elements, ${trailsJson.elements?.length} trail elements`);
 
     if (!fixtures && places.length < MIN_PLACES) {
         throw new Error(`Only ${places.length} places returned; refusing to publish.`);
     }
-    if (!trails.length) console.warn('No trails returned.');
+    if (!fixtures && !trails.length) {
+        throw new Error(`No trails returned (${trailsJson.elements?.length ?? 0} elements); refusing to publish.`);
+    }
 
     const counts = {};
     for (const p of places) counts[p.category] = (counts[p.category] || 0) + 1;

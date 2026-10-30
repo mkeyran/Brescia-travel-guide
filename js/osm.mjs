@@ -31,10 +31,21 @@ export function placesQuery(bbox = BBOX) {
 out center tags;`;
 }
 
+// Relations come without geometry (long-distance routes like the E-paths
+// would be enormous); only their ways inside the area come with geometry.
 export function trailsQuery(bbox = BBOX) {
+    const b = bbox.join(',');
     return `[out:json][timeout:180];
-relation["type"="route"]["route"~"^(hiking|foot)$"](${bbox.join(',')});
-out geom tags;`;
+relation["type"="route"]["route"~"^(hiking|foot)$"](${b})->.r;
+.r out body;
+way(r.r)(${b});
+out geom;`;
+}
+
+// Overpass reports timeouts and memory errors as HTTP 200 with a "remark".
+export function checkOverpassResponse(json) {
+    if (json?.remark && /error/i.test(json.remark)) throw new Error(`Overpass: ${json.remark}`);
+    return json;
 }
 
 const FOOD_LABELS = {
@@ -167,16 +178,29 @@ function inClipBox([lat, lng], bbox) {
         lng >= bbox[1] - CLIP_MARGIN && lng <= bbox[3] + CLIP_MARGIN;
 }
 
+// Accepts member geometry inline (out geom on relations) or as separate
+// way elements (the current query).
 export function transformTrails(overpassJson, bbox = BBOX) {
+    const elements = overpassJson.elements || [];
+    const wayGeometry = new Map();
+    for (const el of elements) {
+        if (el.type === 'way' && el.geometry) wayGeometry.set(el.id, el.geometry);
+    }
+
     const trails = [];
-    for (const el of overpassJson.elements || []) {
+    for (const el of elements) {
         if (el.type !== 'relation') continue;
         const t = el.tags || {};
         const segments = [];
         let clipped = false;
         for (const m of el.members || []) {
-            if (m.type !== 'way' || !m.geometry || m.geometry.length < 2) continue;
-            const coords = m.geometry.map(p => [round(p.lat), round(p.lon)]);
+            if (m.type !== 'way') continue;
+            const geometry = (m.geometry || wayGeometry.get(m.ref) || []).filter(p => p && p.lat != null);
+            if (geometry.length < 2) {
+                clipped = true;
+                continue;
+            }
+            const coords = geometry.map(p => [round(p.lat), round(p.lon)]);
             if (!coords.some(c => inClipBox(c, bbox))) {
                 clipped = true;
                 continue;

@@ -1,5 +1,12 @@
 // Brescia on Foot — all places and trails come from data/*.json,
-// which the build generates from OpenStreetMap.
+// which the build generates from OpenStreetMap. If those files are missing
+// (e.g. Pages serving the raw branch), the data is fetched live from Overpass.
+
+import { checkOverpassResponse, placesQuery, trailsQuery, transformPlaces, transformTrails } from './osm.mjs';
+
+const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
+const LIVE_CACHE = 'live-data-v2';
+const LIVE_MAX_AGE_MS = 7 * 24 * 3600 * 1000;
 
 const BRESCIA = [45.5398, 10.2200];
 const LIST_LIMIT = 60;
@@ -63,18 +70,12 @@ async function init() {
     bindUi();
     registerServiceWorker();
     try {
-        const [meta, places, trails] = await Promise.all([
-            fetchJson('data/meta.json'),
-            fetchJson('data/places.json'),
-            fetchJson('data/trails.json')
-        ]);
-        state.meta = meta;
-        state.places = places;
-        state.trails = trails;
+        Object.assign(state, await loadData());
     } catch (err) {
         console.error(err);
         setPanelTitle('Map data could not be loaded');
-        el('panelBody').innerHTML = `<p class="empty">The place data is missing. If you are running this locally, build the site first with <code>node scripts/build.mjs</code>.</p>`;
+        el('panelBody').innerHTML = `<p class="empty">Could not load places from OpenStreetMap (${esc(err.message)}). Check your connection and reload the page.</p>
+            <button class="btn primary" onclick="location.reload()">Reload</button>`;
         return;
     }
     buildLayers();
@@ -83,10 +84,56 @@ async function init() {
     openFromHash();
 }
 
-async function fetchJson(url) {
-    const res = await fetch(url);
+async function fetchJson(url, options) {
+    const res = await fetch(url, options);
     if (!res.ok) throw new Error(`${url}: ${res.status}`);
     return res.json();
+}
+
+async function loadData() {
+    try {
+        const [meta, places, trails] = await Promise.all([
+            fetchJson('data/meta.json'),
+            fetchJson('data/places.json'),
+            fetchJson('data/trails.json')
+        ]);
+        return { meta, places, trails };
+    } catch (err) {
+        console.warn('Built data not available, using live OpenStreetMap data', err);
+    }
+
+    const cache = 'caches' in window ? await caches.open(LIVE_CACHE).catch(() => null) : null;
+    const cached = await cache?.match('live.json');
+    const saved = cached ? await cached.json() : null;
+    if (saved && Date.now() - new Date(saved.meta.fetchedAt) < LIVE_MAX_AGE_MS) return saved;
+
+    setPanelTitle('Loading places from OpenStreetMap…');
+    el('panelBody').innerHTML = `<p class="empty">Downloading the latest data. The first visit can take up to a minute; after that it is stored on your phone.</p>`;
+    try {
+        const [placesJson, trailsJson] = await Promise.all([overpass(placesQuery()), overpass(trailsQuery())]);
+        const places = transformPlaces(placesJson);
+        const trails = transformTrails(trailsJson);
+        const counts = { trails: trails.length };
+        for (const p of places) counts[p.category] = (counts[p.category] || 0) + 1;
+        const data = { meta: { fetchedAt: new Date().toISOString(), source: 'OpenStreetMap via Overpass API (live)', counts }, places, trails };
+        await cache?.put('live.json', new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
+        return data;
+    } catch (err) {
+        if (saved) return saved; // stale but better than nothing offline
+        throw err;
+    }
+}
+
+async function overpass(query) {
+    let lastError;
+    for (const url of OVERPASS) {
+        try {
+            return checkOverpassResponse(await fetchJson(url, { method: 'POST', body: new URLSearchParams({ data: query }) }));
+        } catch (err) {
+            lastError = err;
+        }
+    }
+    throw lastError;
 }
 
 function initMap() {

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { transformPlaces, transformTrails, placesQuery, trailsQuery, distanceKm } from '../scripts/osm.mjs';
+import { transformPlaces, transformTrails, placesQuery, trailsQuery, distanceKm, checkOverpassResponse } from '../js/osm.mjs';
 
 const fixture = name => JSON.parse(readFileSync(new URL(`fixtures/${name}`, import.meta.url)));
 
@@ -51,10 +51,29 @@ test('trails: builds segments, computes length, clips far-away parts, drops tiny
 test('queries target the Brescia bounding box', () => {
     assert.match(placesQuery(), /\[bbox:45\.49,10\.15,45\.6,10\.33\]/);
     assert.match(trailsQuery(), /\(45\.49,10\.15,45\.6,10\.33\)/);
-    assert.match(trailsQuery(), /out geom/);
+
 });
 
 test('distanceKm is roughly right', () => {
     // 0.01 degrees of latitude is about 1.11 km
     assert.ok(Math.abs(distanceKm([45.5, 10.2], [45.51, 10.2]) - 1.112) < 0.01);
+});
+
+test('trails: joins relation members with separately returned ways', () => {
+    const [t] = transformTrails(fixture('trails-split.json'));
+    assert.equal(t.id, 'relation/200');
+    assert.equal(t.name, 'Trail S2');
+    assert.equal(t.segments.length, 2);
+    assert.equal(t.clipped, true, 'way 99 is outside the area');
+    assert.ok(t.lengthKm > 0.5);
+});
+
+test('Overpass error remarks are treated as failures', () => {
+    assert.throws(() => checkOverpassResponse({ elements: [], remark: 'runtime error: Query run out of memory using about 2048 MB of RAM.' }), /out of memory/);
+    assert.doesNotThrow(() => checkOverpassResponse({ elements: [] }));
+});
+
+test('trails query fetches relation bodies and clipped ways', () => {
+    assert.match(trailsQuery(), /\.r out body;/);
+    assert.match(trailsQuery(), /way\(r\.r\)\(45\.49,10\.15,45\.6,10\.33\);\s*out geom;/);
 });

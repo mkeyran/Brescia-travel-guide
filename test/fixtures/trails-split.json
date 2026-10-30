@@ -1,0 +1,9 @@
+{
+  "_note": "Synthetic Overpass response (relation bodies + ways clipped to area). Tests only.",
+  "elements": [
+    {"type": "relation", "id": 200, "tags": {"type": "route", "route": "hiking", "ref": "S2", "cai_scale": "T"},
+     "members": [{"type": "way", "ref": 21, "role": ""}, {"type": "way", "ref": 22, "role": ""}, {"type": "way", "ref": 99, "role": ""}]},
+    {"type": "way", "id": 21, "geometry": [{"lat": 45.5420, "lon": 10.2250}, {"lat": 45.5450, "lon": 10.2300}]},
+    {"type": "way", "id": 22, "geometry": [{"lat": 45.5450, "lon": 10.2300}, null, {"lat": 45.5480, "lon": 10.2380}]}
+  ]
+}

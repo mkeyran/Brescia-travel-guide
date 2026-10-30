@@ -11,6 +11,7 @@ const APP_FILES = [
     'index.html',
     'styles.css',
     'js/app.js',
+    'js/osm.mjs',
     'manifest.webmanifest',
     'icons/icon-192.png',
     'vendor/leaflet/leaflet.js',
@@ -24,7 +25,12 @@ const APP_FILES = [
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(caches.open(APP_CACHE).then(c => c.addAll(APP_FILES)).then(() => self.skipWaiting()));
+    // Cache files one by one: data/ is absent when Pages serves the raw branch.
+    event.waitUntil(
+        caches.open(APP_CACHE)
+            .then(c => Promise.allSettled(APP_FILES.map(f => c.add(f))))
+            .then(() => self.skipWaiting())
+    );
 });
 
 self.addEventListener('activate', event => {
