@@ -171,6 +171,7 @@ button { font: inherit; color: inherit; }
 
 .fabs {
     position: fixed;
+    transition: bottom 0.25s ease;
     right: 12px;
     bottom: calc(var(--panel-collapsed) + var(--safe-bottom) + 16px);
     display: flex;
@@ -190,6 +191,9 @@ button { font: inherit; color: inherit; }
     font-size: 1.4rem;
     cursor: pointer;
 }
+
+/* Keep the buttons reachable when the list is expanded on phones. */
+body:has(.panel[data-expanded="true"]) .fabs { bottom: calc(62vh + 12px); }
 
 #locateBtn[data-state="searching"] { animation: blink 1s infinite; }
 #locateBtn[data-state="on"] { background: #1a73e8; color: #fff; }
@@ -433,10 +437,59 @@ button { font: inherit; color: inherit; }
     .panel-handle { cursor: default; pointer-events: none; }
     .grip { display: none; }
 
-    .fabs { bottom: 32px; }
+    .fabs,
+    body:has(.panel[data-expanded="true"]) .fabs { bottom: 32px; }
     .leaflet-control-zoom { display: block; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
 }
+
+/* ---------- Guide (picks & walks) ---------- */
+
+.pin.pick { width: 34px; height: 34px; border-width: 3px; }
+.pin.pick span { font-size: 17px; }
+.chip.extra { border-style: dashed; }
+.chip.extra[aria-pressed="true"] { border-style: solid; }
+
+.section {
+    margin: 1rem 0 0.25rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}
+
+.take {
+    margin: 0.75rem 0;
+    padding: 0.75rem 0.9rem;
+    border-left: 4px solid var(--brand);
+    border-radius: 0 10px 10px 0;
+    background: var(--bg-soft);
+}
+.take span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand);
+}
+.take p { margin: 0.35rem 0 0; line-height: 1.5; }
+
+.caution, .note {
+    margin: 0.5rem 0;
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+.caution { background: #fff5e6; color: #7a4b00; }
+.note { background: #eef3f8; color: #2a4a6b; }
+
+.badge-line { margin: 0.25rem 0; font-size: 0.85rem; font-weight: 600; }
+.badge-line.ok { color: var(--brand); }
+.badge-line.check { color: #a35200; }
+
+.stop.walk { background: #fff; color: var(--brand); border: 2px solid var(--brand); border-radius: 6px; }
+.link-btn.inline { padding: 0; font-weight: 600; text-align: left; }

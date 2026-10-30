@@ -1,5 +1,5 @@
-// OpenStreetMap queries and transforms for the Brescia guide.
-// Everything shown in the app comes from here: no hand-written place data.
+// OpenStreetMap queries and transforms for the optional map extras
+// (CAI trails, drinking water, toilets). The guide itself is in picks.mjs.
 
 // south, west, north, east — the city plus the hills around it
 // (Colle Cidneo, Monte Maddalena, Sant'Eufemia, Colle San Giuseppe).
@@ -15,16 +15,6 @@ export function placesQuery(bbox = BBOX) {
     const b = bbox.join(',');
     return `[out:json][timeout:180][bbox:${b}];
 (
-  nwr["shop"~"^(${FOOD_SHOPS.join('|')})$"];
-  nwr["amenity"="ice_cream"];
-  nwr["amenity"="marketplace"];
-  nwr["tourism"="viewpoint"];
-  nwr["tourism"="picnic_site"];
-  nwr["historic"]["name"];
-  nwr["tourism"~"^(museum|attraction|artwork)$"]["name"];
-  nwr["amenity"="place_of_worship"]["wikidata"];
-  nwr["amenity"="fountain"]["name"];
-  nwr["leisure"~"^(park|nature_reserve)$"]["name"];
   nwr["amenity"="drinking_water"];
   nwr["amenity"="toilets"];
 );

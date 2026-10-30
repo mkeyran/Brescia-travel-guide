@@ -12,6 +12,7 @@ const APP_FILES = [
     'styles.css',
     'js/app.js',
     'js/osm.mjs',
+    'js/picks.mjs',
     'manifest.webmanifest',
     'icons/icon-192.png',
     'vendor/leaflet/leaflet.js',
@@ -19,6 +20,7 @@ const APP_FILES = [
     'vendor/markercluster/leaflet.markercluster.js',
     'vendor/markercluster/MarkerCluster.css',
     'vendor/markercluster/MarkerCluster.Default.css',
+    'data/picks.json',
     'data/places.json',
     'data/trails.json',
     'data/meta.json'

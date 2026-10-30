@@ -1,7 +1,7 @@
 {
   "name": "Brescia on Foot",
   "short_name": "Brescia",
-  "description": "Walking map of Brescia: trails, food shops and markets, heritage and viewpoints from OpenStreetMap",
+  "description": "A hand-picked walking guide to Brescia",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
