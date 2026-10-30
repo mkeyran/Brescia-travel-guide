@@ -6,7 +6,7 @@
 // serving the raw branch), the same lookups run in the browser.
 
 import { checkOverpassResponse, placesQuery, trailsQuery, transformPlaces, transformTrails } from './osm.mjs';
-import { CHECKED, buildWalks, picksQuery, resolvePicks, walkRouteUrl } from './picks.mjs';
+import { CHECKED, WALKS, buildWalks, picksQuery, resolvePicks, walkRouteUrl } from './picks.mjs';
 
 const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
 const LIVE_CACHE = 'live-data-v3';
@@ -66,20 +66,23 @@ async function init() {
     initMap();
     bindUi();
     registerServiceWorker();
+    let data;
     try {
-        const data = await loadData();
-        const picks = data.picks.map(p => ({ ...p, pick: true }));
-        state.places = [...picks.filter(p => p.lat != null), ...data.places.filter(p => p.category === 'essentials')];
-        state.unlocated = picks.filter(p => p.lat == null);
-        state.walks = data.walks;
-        state.trails = data.trails;
-        state.meta = data.meta;
+        data = await loadData();
     } catch (err) {
         console.error(err);
-        setPanelTitle('The guide could not be loaded');
-        el('panelBody').innerHTML = `<p class="empty">Could not load the guide (${esc(err.message)}). Check your connection and reload.</p>
-            <button class="btn primary" onclick="location.reload()">Reload</button>`;
-        return;
+        const picks = resolvePicks({ elements: [] });
+        data = { meta: { builtAt: new Date().toISOString(), picksChecked: CHECKED, offline: true }, picks, walks: buildWalks(picks), places: [], trails: [] };
+    }
+    const picks = data.picks.map(p => ({ ...p, pick: true }));
+    state.places = [...picks.filter(p => p.lat != null), ...data.places.filter(p => p.category === 'essentials')];
+    state.unlocated = picks.filter(p => p.lat == null);
+    state.walks = data.walks;
+    state.trails = data.trails;
+    state.meta = data.meta;
+    if (data.meta.offline) {
+        toast('Couldn\'t reach the map service. Showing the guide with addresses; reload later for pins and routes.');
+        expandPanel(true);
     }
     buildLayers();
     applyFilters();
@@ -107,51 +110,63 @@ async function loadData() {
     }
 
     const cache = 'caches' in window ? await caches.open(LIVE_CACHE).catch(() => null) : null;
-    const cached = await cache?.match('live.json');
-    const saved = cached ? await cached.json() : null;
+    const cached = await cache?.match('live.json').catch(() => null);
+    const saved = cached ? await cached.json().catch(() => null) : null;
     if (saved && Date.now() - new Date(saved.meta.builtAt) < LIVE_MAX_AGE_MS) return saved;
 
     setPanelTitle('Preparing the map…');
     el('panelBody').innerHTML = `<p class="empty">Placing the picks on the map. The first visit can take up to a minute; after that everything is stored on your phone.</p>`;
+
+    // One request at a time: Overpass refuses more than ~2 parallel requests per user.
+    let picks;
+    let located = true;
     try {
-        const [picksJson, placesJson, trailsJson] = await Promise.all([
-            overpass(picksQuery()), overpass(placesQuery()), overpass(trailsQuery())
-        ]);
-        const picks = resolvePicks(picksJson);
-        const routes = {};
-        const byId = Object.fromEntries(picks.map(p => [p.id, p]));
-        await Promise.all(buildWalks(picks).map(async w => {
-            try {
-                const json = await fetchJson(walkRouteUrl(w.stops.map(id => [byId[id].lat, byId[id].lng])));
-                const r = json.routes[0];
-                routes[w.id] = { path: r.geometry.coordinates.map(([lng, lat]) => [lat, lng]), distance: r.distance, duration: r.duration };
-            } catch (e) {
-                console.warn('Routing failed', w.id, e);
-            }
-        }));
-        const data = {
-            meta: { builtAt: new Date().toISOString(), picksChecked: CHECKED, source: 'Hand-picked; located live in your browser' },
-            picks,
-            walks: buildWalks(picks, routes),
-            places: transformPlaces(placesJson).filter(p => p.category === 'essentials'),
-            trails: transformTrails(trailsJson)
-        };
-        await cache?.put('live.json', new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
-        return data;
+        picks = resolvePicks(await overpass(picksQuery()));
     } catch (err) {
+        console.warn('Could not locate picks', err);
         if (saved) return saved;
-        throw err;
+        picks = resolvePicks({ elements: [] });
+        located = false;
     }
+    const places = await overpass(placesQuery()).then(j => transformPlaces(j).filter(p => p.category === 'essentials')).catch(() => []);
+    const trails = await overpass(trailsQuery()).then(transformTrails).catch(() => []);
+
+    const routes = {};
+    const byId = Object.fromEntries(picks.map(p => [p.id, p]));
+    for (const w of buildWalks(picks)) {
+        if (w.stops.length < 2) continue;
+        try {
+            const json = await fetchJson(walkRouteUrl(w.stops.map(id => [byId[id].lat, byId[id].lng])));
+            const r = json.routes[0];
+            routes[w.id] = { path: r.geometry.coordinates.map(([lng, lat]) => [lat, lng]), distance: r.distance, duration: r.duration };
+        } catch (e) {
+            console.warn('Routing failed', w.id, e);
+        }
+    }
+    const data = {
+        meta: { builtAt: new Date().toISOString(), picksChecked: CHECKED, source: 'Hand-picked; located live in your browser', offline: !located },
+        picks,
+        walks: buildWalks(picks, routes),
+        places,
+        trails
+    };
+    // Only remember a result that actually has the picks on the map.
+    if (located) await cache?.put('live.json', new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } })).catch(() => {});
+    return data;
 }
 
 async function overpass(query) {
     let lastError;
-    for (const url of OVERPASS) {
-        try {
-            return checkOverpassResponse(await fetchJson(url, { method: 'POST', body: new URLSearchParams({ data: query }) }));
-        } catch (err) {
-            lastError = err;
+    for (let round = 0; round < 2; round++) {
+        for (const url of OVERPASS) {
+            try {
+                return checkOverpassResponse(await fetchJson(url, { method: 'POST', body: new URLSearchParams({ data: query }) }));
+            } catch (err) {
+                lastError = err;
+                console.warn('Overpass failed', url, err.message);
+            }
         }
+        await new Promise(r => setTimeout(r, 4000));
     }
     throw lastError;
 }
@@ -288,7 +303,7 @@ function renderList() {
             <li><button class="row" data-id="${esc(w.id)}">
                 <span class="row-icon" style="--c:${CATEGORY.walks.color}">🚶</span>
                 <span class="row-text"><strong>${esc(w.name)}</strong>
-                <small>${w.distanceKm ? `${w.distanceKm} km · ~${formatMinutes(w.minutes)} walking · ` : ''}${w.stops.length} stops</small></span>
+                <small>${w.distanceKm ? `${w.distanceKm} km · ~${formatMinutes(w.minutes)} walking · ` : ''}${allStops(w).length} stops · ${esc(w.when)}</small></span>
             </button></li>`).join('')}
         </ul>` : ''}
         ${items.length ? `<h3 class="section">Places · nearest first</h3>
@@ -354,7 +369,8 @@ function highlight(item) {
     }
     stopLayer.clearLayers();
     if (item?.stops) {
-        item.stops.map(id => state.places.find(p => p.id === id)).filter(Boolean).forEach((p, i) => {
+        allStops(item).forEach((p, i) => {
+            if (p.lat == null) return;
             L.marker([p.lat, p.lng], {
                 icon: L.divIcon({ className: 'stop-wrap', html: `<div class="stop walk">${i + 1}</div>`, iconSize: [26, 26], iconAnchor: [-6, 34] }),
                 zIndexOffset: 2000, interactive: false
@@ -426,26 +442,32 @@ function renderExtraDetail(p) {
         </div>`;
 }
 
+function allStops(w) {
+    const order = WALKS.find(x => x.id === w.id)?.stops || w.stops;
+    return order.map(id => findItem(id)).filter(Boolean);
+}
+
 function renderWalkDetail(w) {
-    const stops = w.stops.map(id => state.places.find(p => p.id === id)).filter(Boolean);
+    const all = allStops(w);
+    const stops = all.filter(p => p.lat != null);
     setPanelTitle('🚶 Walk');
     el('panelBody').innerHTML = `
         <button class="link-btn" data-action="back">← Back to list</button>
         <h2>${esc(w.name)}</h2>
-        <p class="badge-line ok">${w.distanceKm ? `${w.distanceKm} km · about ${formatMinutes(w.minutes)} of walking, plus stops` : `${stops.length} stops`}</p>
+        <p class="badge-line ok">${w.distanceKm ? `${w.distanceKm} km · about ${formatMinutes(w.minutes)} of walking, plus stops` : `${all.length} stops`}</p>
         <div class="take"><span>Why this walk</span><p>${esc(w.pitch)}</p></div>
         <p class="caution">🗓️ Best: ${esc(w.when)}</p>
         <ol class="stops">
-            ${stops.map((p, i) => `
+            ${all.map((p, i) => `
                 <li><button class="row" data-id="${esc(p.id)}">
                     <span class="stop small walk">${i + 1}</span>
                     <span class="row-text"><strong>${esc(p.name)}</strong><small>${esc(p.caution || p.address || '')}</small></span>
                 </button></li>`).join('')}
         </ol>
-        ${w.missing?.length ? `<p class="note">${w.missing.length} stop(s) couldn't be placed on the map and are left out.</p>` : ''}
-        ${w.path ? '' : `<p class="note">The dotted line only shows the order of the stops. Use the directions for the actual path.</p>`}
+        ${w.missing?.length ? `<p class="note">${w.missing.length} stop(s) aren't on the map yet. Tap them for the address.</p>` : ''}
+        ${w.path || stops.length < 2 ? '' : `<p class="note">The dotted line only shows the order of the stops. Use the directions for the actual path.</p>`}
         <div class="actions">
-            <a class="btn primary" href="${walkUrl(stops)}" target="_blank" rel="noopener">🧭 Walk it in Google Maps</a>
+            ${stops.length >= 2 ? `<a class="btn primary" href="${walkUrl(stops)}" target="_blank" rel="noopener">🧭 Walk it in Google Maps</a>` : ''}
             <button class="btn" data-action="zoom" data-id="${esc(w.id)}">🔍 Show on map</button>
             ${w.path ? `<button class="btn" data-action="gpx" data-id="${esc(w.id)}">⬇️ GPX</button>` : ''}
         </div>`;
