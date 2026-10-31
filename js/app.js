@@ -303,7 +303,7 @@ function renderList() {
             <li><button class="row" data-id="${esc(w.id)}">
                 <span class="row-icon" style="--c:${CATEGORY.walks.color}">🚶</span>
                 <span class="row-text"><strong>${esc(w.name)}</strong>
-                <small>${w.distanceKm ? `${w.distanceKm} km · ~${formatMinutes(w.minutes)} walking · ` : ''}${allStops(w).length} stops · ${esc(w.when)}</small></span>
+                <small>${w.distanceKm ? `${w.distanceKm} km · ${w.effort ? 'mountain day' : `~${formatMinutes(w.minutes)} walking`} · ` : ''}${allStops(w).length} stops · ${esc(w.when)}</small></span>
             </button></li>`).join('')}
         </ul>` : ''}
         ${items.length ? `<h3 class="section">Places · nearest first</h3>
@@ -331,6 +331,12 @@ function findItem(id) {
 function selectItem(id, { fly = false } = {}) {
     const item = findItem(id);
     if (!item) return;
+    // A trail opened from a pick or a link should be visible even if the layer is off.
+    if (item.segments && !state.enabled.has('trails')) {
+        state.enabled.add('trails');
+        document.querySelector('.chip[data-cat="trails"]')?.setAttribute('aria-pressed', 'true');
+        applyFilters();
+    }
     state.selected = id;
     state.view = 'detail';
     history.replaceState(null, '', `#${id}`);
@@ -338,8 +344,12 @@ function selectItem(id, { fly = false } = {}) {
 
     if (fly) {
         if (item.stops) fitWalk(item);
-        else if (item.segments) map.fitBounds(trailLines.get(id).line.getBounds(), { padding: [40, 40] });
-        else if (item.lat != null) map.setView([item.lat, item.lng], Math.max(map.getZoom(), 17));
+        else if (item.segments) map.fitBounds(trailLines.get(id).line.getBounds(), fitOptions());
+        else if (item.lat != null) {
+            map.setView([item.lat, item.lng], Math.max(map.getZoom(), 17), { animate: false });
+            // On phones the expanded panel covers the lower part of the map.
+            if (isPhone()) map.panBy([0, sheetHeight() / 2], { animate: false });
+        }
     }
     if (item.stops) renderWalkDetail(item);
     else if (item.segments) renderTrailDetail(item);
@@ -381,7 +391,22 @@ function highlight(item) {
 
 function fitWalk(w) {
     const points = w.path || walkStopPoints(w);
-    if (points.length) map.fitBounds(L.latLngBounds(points), { padding: [40, 40], maxZoom: 17 });
+    if (points.length) map.fitBounds(L.latLngBounds(points), { ...fitOptions(), maxZoom: 17 });
+}
+
+function isPhone() {
+    return window.innerWidth < 900;
+}
+
+// Height of the expanded bottom sheet (matches the 62vh in styles.css).
+function sheetHeight() {
+    return Math.round(window.innerHeight * 0.62);
+}
+
+function fitOptions() {
+    return isPhone()
+        ? { paddingTopLeft: [30, 30], paddingBottomRight: [30, sheetHeight() - 40] }
+        : { padding: [40, 40] };
 }
 
 function renderPlaceDetail(p) {
@@ -412,6 +437,7 @@ function renderPlaceDetail(p) {
             <a class="btn primary" href="${directions}" target="_blank" rel="noopener">🧭 Walking directions</a>
             ${p.lat != null ? `<button class="btn" data-action="toggle-walk" data-id="${esc(p.id)}">${inWalk ? '✓ In my walk' : '➕ Add to my walk'}</button>
             <button class="btn" data-action="zoom" data-id="${esc(p.id)}">🔍 Zoom to</button>` : ''}
+            ${p.trail && findItem(p.trail) ? `<button class="btn primary" data-id="${esc(p.trail)}">🥾 Show trail ${esc(findItem(p.trail).ref || '')}</button>` : ''}
         </div>`;
 }
 
@@ -454,7 +480,8 @@ function renderWalkDetail(w) {
     el('panelBody').innerHTML = `
         <button class="link-btn" data-action="back">← Back to list</button>
         <h2>${esc(w.name)}</h2>
-        <p class="badge-line ok">${w.distanceKm ? `${w.distanceKm} km · about ${formatMinutes(w.minutes)} of walking, plus stops` : `${all.length} stops`}</p>
+        <p class="badge-line ok">${w.distanceKm ? `${w.distanceKm} km${w.effort ? '' : ` · about ${formatMinutes(w.minutes)} of walking, plus stops`}` : `${all.length} stops`}</p>
+        ${w.effort ? `<p class="caution">⛰️ ${esc(w.effort)}</p>` : ''}
         <div class="take"><span>Why this walk</span><p>${esc(w.pitch)}</p></div>
         <p class="caution">🗓️ Best: ${esc(w.when)}</p>
         <ol class="stops">

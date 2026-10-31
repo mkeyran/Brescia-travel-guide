@@ -1,0 +1,11 @@
+{
+  "builtAt": "2026-10-31T20:05:23.524Z",
+  "picksChecked": "2026-10",
+  "source": "Hand-picked; located with Nominatim, walks routed with OSRM, trails from Waymarked Trails (all OpenStreetMap data)",
+  "counts": {
+    "picks": 29,
+    "walks": 4,
+    "trails": 101,
+    "essentials": 373
+  }
+}

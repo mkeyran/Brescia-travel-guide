@@ -27,7 +27,7 @@ export const PICKS = [
             { label: 'italia.it', url: 'https://www.italia.it/en/lombardy/brescia/chiesa-dei-santi-nazario-e-celso' },
             { label: 'Finestre sull\'Arte', url: 'https://www.finestresullarte.info/mostre/brescia-mostra-a-tu-per-tu-con-tiziano' }
         ],
-        find: { name: 'Nazar[i]?o e Celso', near: [45.5352, 10.2130], radius: 900 }
+        find: { q: ['Santi Nazaro e Celso, Brescia'], name: 'Nazar[i]?o e Celso', near: [45.5352, 10.2130], radius: 900 }
     },
     {
         id: 'san-giovanni',
@@ -40,7 +40,7 @@ export const PICKS = [
             { label: 'Comune di Brescia', url: 'https://comune.brescia.it/node/17195' },
             { label: 'Wikipedia (Romanino\'s Supper)', url: 'https://en.wikipedia.org/wiki/The_Feast_in_the_House_of_Simon_the_Pharisee_(Romanino)' }
         ],
-        find: { name: 'San Giovanni Evangelista', near: [45.5425, 10.2160], radius: 900 }
+        find: { q: ['Chiesa di San Giovanni Evangelista, Brescia'], name: 'San Giovanni Evangelista', near: [45.5425, 10.2160], radius: 900 }
     },
     {
         id: 'miracoli',
@@ -54,7 +54,7 @@ export const PICKS = [
             { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Santa_Maria_dei_Miracoli,_Brescia' },
             { label: 'Visit Brescia', url: 'https://visitbrescia.it/attivita/chiesa-di-santa-maria-dei-miracoli' }
         ],
-        find: { name: 'Miracoli', near: [45.5365, 10.2145], radius: 900 }
+        find: { q: ['Chiesa di Santa Maria dei Miracoli, Brescia'], name: 'Miracoli', near: [45.5365, 10.2145], radius: 900 }
     },
     {
         id: 'san-francesco',
@@ -69,7 +69,7 @@ export const PICKS = [
             { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/San_Francesco,_Brescia' },
             { label: 'in-lombardia', url: 'https://www.in-lombardia.it/en/church-san-francesco-dassisi' }
         ],
-        find: { name: 'San Francesco', near: [45.5375, 10.2155], radius: 700, filter: '["amenity"="place_of_worship"]' }
+        find: { q: ['Chiesa di San Francesco d\'Assisi, Brescia'], name: 'San Francesco', near: [45.5375, 10.2155], radius: 700, filter: '["amenity"="place_of_worship"]' }
     },
     {
         id: 'carmine',
@@ -82,7 +82,7 @@ export const PICKS = [
             { label: 'Brescia Tourism', url: 'https://bresciatourism.it/en/things-to-do/carmine-old-district' },
             { label: 'in-lombardia', url: 'https://www.in-lombardia.it/en/church-santa-maria-del-carmine' }
         ],
-        find: { name: 'Santa Maria del Carmine', near: [45.5428, 10.2140], radius: 900 }
+        find: { q: ['Chiesa di Santa Maria del Carmine, Brescia'], name: 'Santa Maria del Carmine', near: [45.5428, 10.2140], radius: 900 }
     },
     {
         id: 'duomo-vecchio',
@@ -90,13 +90,15 @@ export const PICKS = [
         icon: '⭕',
         name: 'Duomo Vecchio (La Rotonda)',
         why: 'A round Romanesque cathedral that sits below the level of the square, with the crypt of San Filastrio underneath, reached by two small staircases under the presbytery. It\'s unlike any other church you\'ll see on this trip.',
+        tip: 'Outside, look between two of the windows on the curved wall: there is a fossil shell in the stone blocks.',
         caution: 'One undated listing gives 8:00–12:00 and 15:00–19:00 daily.',
         confidence: 'confirmed',
         evidence: [
             { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Old_Cathedral,_Brescia' },
+            { label: 'Giornale di Brescia: 10 hidden corners', url: 'https://www.giornaledibrescia.it/storie/10-cose-fare-brescia-b8wynt0o' },
             { label: 'Visit Brescia', url: 'https://visitbrescia.it/attivita/piazza-paolo-vi-brescia' }
         ],
-        find: { name: 'Duomo Vecchio|Rotonda|Santa Maria Assunta', near: [45.5388, 10.2219], radius: 600 }
+        find: { q: ['Concattedrale invernale di Santa Maria Assunta, Brescia', 'Duomo Vecchio, Brescia'], name: 'Duomo Vecchio|Rotonda|Santa Maria Assunta', near: [45.5388, 10.2219], radius: 600 }
     },
     {
         id: 'pallata',
@@ -109,7 +111,7 @@ export const PICKS = [
             { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Pallata_Tower,_Brescia' },
             { label: 'Comune di Brescia', url: 'https://www.comune.brescia.it/node/17219' }
         ],
-        find: { name: 'Pallata', near: [45.5406, 10.2163], radius: 700 }
+        find: { q: ['Torre della Pallata, Brescia'], name: 'Pallata', near: [45.5406, 10.2163], radius: 700 }
     },
     {
         id: 'capitolium',
@@ -124,7 +126,7 @@ export const PICKS = [
             { label: 'Brescia Musei', url: 'https://www.bresciamusei.com/en/museums-and-venues/brixia-roman-archaeological-area/' },
             { label: 'italia.it', url: 'https://italia.it/en/lombardy/brescia/brixia-parco-archeologico-di-brescia-romana' }
         ],
-        find: { name: 'Capitolium|Tempio Capitolino', near: [45.5404, 10.2238], radius: 600 }
+        find: { q: ['Tempio Capitolino, Brescia', 'Capitolium, Brescia'], name: 'Capitolium|Tempio Capitolino', near: [45.5404, 10.2238], radius: 600 }
     },
     {
         id: 'castello',
@@ -138,7 +140,7 @@ export const PICKS = [
             { label: 'Brescia Tourism: castle secrets', url: 'https://bresciatourism.it/en/things-to-do/discover-secrets-brescia-castle' },
             { label: 'Museo di Scienze: Specola', url: 'https://museoscienze.comune.brescia.it/en/?p=1139' }
         ],
-        find: { name: 'Castello di Brescia|^Castello$', near: [45.5430, 10.2240], radius: 800 }
+        find: { q: ['Castello di Brescia'], name: 'Castello di Brescia|^Castello$', near: [45.5430, 10.2240], radius: 800 }
     },
     {
         id: 'vantiniano',
@@ -153,7 +155,7 @@ export const PICKS = [
             { label: 'museionline', url: 'https://museionline.info/lombardia-musei-monumenti/cimitero-monumentale-di-brescia' },
             { label: 'Ministero della Cultura', url: 'https://cultura.gov.it/evento/patrimonio-monumentale-a-rischio-cimitero-vantiniano-di-brescia' }
         ],
-        find: { name: 'Vantiniano|Cimitero Monumentale', near: [45.5435, 10.2000], radius: 1500 }
+        find: { q: ['Cimitero Vantiniano, Brescia'], name: 'Vantiniano|Cimitero Monumentale', near: [45.5435, 10.2000], radius: 1500 }
     },
     {
         id: 'mille-miglia',
@@ -167,7 +169,109 @@ export const PICKS = [
             { label: 'Museo Mille Miglia', url: 'https://museomillemiglia.it/it/contatti.php' },
             { label: 'Lonely Planet', url: 'https://www.lonelyplanet.com/points-of-interest/museo-mille-miglia/1256720' }
         ],
-        find: { name: 'Mille Miglia', near: [45.5290, 10.2760], radius: 2500 }
+        find: { q: ['Museo Mille Miglia, Brescia'], name: 'Mille Miglia', near: [45.5290, 10.2760], radius: 2500 }
+    },
+
+    {
+        id: 'underground',
+        category: 'heritage',
+        icon: '🔦',
+        name: 'Brescia Underground — the rivers under the centre',
+        why: 'The Bova, Garza and other streams still run in tunnels under the old town, and a volunteer association takes small groups through them. "Il Sottosopra per tutti" is dry and easy (about 2 h, €5). The wet routes, with waders and a helmet provided, finish by climbing out of a manhole in the Carmine (about 3 h, €20, ages 14–70). This is the most memorable thing you can do in Brescia that almost no visitor knows about.',
+        caution: 'Booking only. Tours meet in the lower level of metro San Faustino. Book via bresciaunderground.com or info@bresciaunderground.com; dates vary.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'idealista (Oct 2026)', url: 'https://www.idealista.it/news/vacanze/mete-turistiche/2026/10/23/477327-brescia-sotterranea-come-camminare-nei-fiumi-sotto-il-centro' },
+            { label: 'Brescia Underground', url: 'https://www.bresciaunderground.com/' }
+        ],
+        find: { q: ['Metro San Faustino, Brescia'], name: 'San Faustino', near: [45.5450, 10.2202], radius: 600 }
+    },
+    {
+        id: 'san-cristo',
+        category: 'heritage',
+        icon: '🎨',
+        name: 'San Cristo — the "Sistine Chapel" of Brescia',
+        address: 'Via Giovanni Piamarta 9, Brescia',
+        why: 'At the top of the steps from Via dei Musei, on the way up to the castle, is a church whose walls and vaults are entirely covered in frescoes. Locals call it the Brescian Sistine Chapel. It belongs to the Saverian missionaries, whose monastery next door has three cloisters.',
+        caution: 'One listing (2024) gives 8:30–18:30 daily, free. Confirm before going.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'museionline', url: 'https://www.museionline.info/lombardia-musei-monumenti/chiesa-di-san-cristo-brescia' },
+            { label: 'Giornale di Brescia: 10 hidden corners', url: 'https://www.giornaledibrescia.it/storie/10-cose-fare-brescia-b8wynt0o' }
+        ],
+        find: { q: ['Chiesa del Santissimo Corpo di Cristo, Brescia'], name: 'Corpo di Cristo', near: [45.5407, 10.2279], radius: 500 }
+    },
+    {
+        id: 'san-pietro-oliveto',
+        category: 'heritage',
+        icon: '🫒',
+        name: 'San Pietro in Oliveto — cloister below the castle',
+        address: 'Via del Castello 10, Brescia',
+        why: 'An 11th-century church and Carmelite convent on the castle hill, with a Doric cloister. It\'s the natural pause halfway up to the castle, and far quieter than the walls above.',
+        caution: 'One listing gives 7:00–11:30 and 16:00–19:30 daily, free.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/San_Pietro_in_Oliveto' },
+            { label: 'museionline', url: 'https://www.museionline.info/lombardia-musei-monumenti/chiesa-di-san-pietro-in-oliveto' }
+        ],
+        find: { q: ['Chiesa di San Pietro in Oliveto, Brescia'], name: 'San Pietro in Oliveto', near: [45.5424, 10.2294], radius: 500 }
+    },
+    {
+        id: 'san-faustino-riposo',
+        category: 'heritage',
+        icon: '🛖',
+        name: 'San Faustino in Riposo — the "Trullo"',
+        why: 'A tiny round church with a conical roof, tucked against the Porta Bruciata tower. Brescians call it the Trullo. Tradition says the patron saints\' relics "rested" here during a procession in the 9th century. It takes 30 seconds to see and is easy to walk past without noticing.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'Comune di Brescia', url: 'https://www.comune.brescia.it/node/17213' },
+            { label: 'Giornale di Brescia: 10 hidden corners', url: 'https://www.giornaledibrescia.it/storie/10-cose-fare-brescia-b8wynt0o' }
+        ],
+        find: { q: ['Chiesa di Santa Rita, Via dei Musei, Brescia'], name: 'Santa Rita|San Faustino in Riposo', near: [45.5402, 10.2208], radius: 400 }
+    },
+    {
+        id: 'curt-dei-puli',
+        category: 'heritage',
+        icon: '⛲',
+        name: 'Curt dei Pulì — a hidden courtyard',
+        address: 'Corso Goffredo Mameli, Brescia',
+        why: 'A courtyard off Corso Mameli with a five-arched portico, Ionic capitals and two fountains: one medieval, for animals, and one neoclassical set into the wall. It gave its name to a classic of Brescian dialect theatre. It\'s one of the few places in the centre that still feels like a neighbourhood yard.',
+        caution: 'It\'s a residential courtyard, so keep your voice down. I found no information on access hours.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'in-lombardia', url: 'https://www.in-lombardia.it/en/piazzetta-curt-dei-pul%C3%AC' },
+            { label: 'Civiltà Bresciana (PDF)', url: 'https://www.civiltabresciana.it/iniziative/2017/06-CurtDeiPuli.pdf' }
+        ],
+        // Not in OpenStreetMap: position from the in-lombardia page.
+        find: { coords: [45.54065, 10.21821], name: 'Pulì', near: [45.5407, 10.2182], radius: 300 }
+    },
+    {
+        id: 'san-clemente',
+        category: 'heritage',
+        icon: '🖌️',
+        name: 'San Clemente — Moretto\'s own church',
+        why: 'Moretto\'s parish church, where he is buried, still hung with his paintings, including the altarpiece of St Clement in its original place, plus a Romanino. It works as a small, free gallery of the painter who is everywhere in Brescia.',
+        caution: 'Access is the problem: a 2023 source said it opened only one hour a week. Check before going.',
+        confidence: 'check',
+        evidence: [
+            { label: 'Visit Brescia', url: 'https://visitbrescia.it/attivita/chiesa-san-clemente-brescia' },
+            { label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/San_Clemente,_Brescia' }
+        ],
+        find: { q: ['Chiesa di San Clemente, Brescia'], name: 'San Clemente', near: [45.5377, 10.2262], radius: 400 }
+    },
+    {
+        id: 'martinengo-courtyard',
+        category: 'heritage',
+        icon: '🐙',
+        name: 'Palazzo Martinengo — the octopus courtyard',
+        address: 'Via dei Musei 30, Brescia',
+        why: 'Walk in from Via dei Musei 30 and down the cobbled path: the courtyard has artworks including an octopus rising out of a pond. If an exhibition is on, there\'s a small window on the first floor at the Piazza del Foro corner that looks straight out at the Capitolium without anyone seeing you.',
+        caution: 'The interior, including the window, is only open during exhibitions.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'Giornale di Brescia: 10 hidden corners', url: 'https://www.giornaledibrescia.it/storie/10-cose-fare-brescia-b8wynt0o' }
+        ],
+        find: { q: ['Via dei Musei 30, Brescia'], name: 'Martinengo', near: [45.5395, 10.2248], radius: 300 }
     },
 
     // ---------- Outdoors ----------
@@ -176,15 +280,16 @@ export const PICKS = [
         category: 'nature',
         icon: '⛰️',
         name: 'Monte Maddalena from the city',
-        why: 'Brescia\'s own mountain, which you can climb straight from town. The serious way up is CAI trails 901 and 902: about 9.7 km and 690 m of climb, around 4¼ h, rated hard. For an easier day, the 915 "Fiamme Verdi" loop is about 9 km with 200 m of climb, graded T (easy).',
-        tip: 'Turn on 🥾 CAI trails and search "901" to see the path and download a GPX.',
-        caution: 'Distances and times come from hiking sites (Komoot, Gulliver) and are approximate.',
+        why: 'Brescia\'s own mountain, and you can climb it straight from town. Take CAI trail 901 from Sant\'Eufemia (Via Cesare Noventa) to the former Rifugio Maddalena: 4.5 km and 775 m of climbing, about 2 h 40 up and 1 h 50 down, grade E (a real mountain path, so wear proper shoes). For a shorter outing, trail 915 is a 5.1 km loop from Doss del Brüch with 235 m of climb, about 1 h 30, also grade E. It\'s known as the Path of the Brescian Resistance.',
+        tip: 'Tap "Show trail 901" below for the exact path and a GPX. If you come up by the road instead, look near the ninth hairpin for a giant yew woven from branches, part of the Bosco dell\'Arte land-art project.',
+        trail: 'relation/1963369',
         confidence: 'confirmed',
         evidence: [
-            { label: 'Gulliver: Maddalena from Parco Leopardi', url: 'https://www.gulliver.it/itinerari/maddalena-colle-della-dal-parco-leopardi-percorso-n-16/2019/10/06/187566/' },
-            { label: 'Climbfinder', url: 'https://climbfinder.com/en/climbs/monte-maddalena-brescia' }
+            { label: 'Trail 901 (CAI survey 2023, on Waymarked Trails)', url: 'https://hiking.waymarkedtrails.org/#route?id=1963369' },
+            { label: 'Trail 915 (CAI survey 2025, on Waymarked Trails)', url: 'https://hiking.waymarkedtrails.org/#route?id=2396484' },
+            { label: 'Giornale di Brescia: 10 hidden corners', url: 'https://www.giornaledibrescia.it/storie/10-cose-fare-brescia-b8wynt0o' }
         ],
-        find: { name: 'Maddalena', near: [45.5480, 10.2850], radius: 3500, filter: '["natural"="peak"]' }
+        find: { q: ['Monte Maddalena, Brescia'], name: 'Maddalena', near: [45.5480, 10.2850], radius: 3500, filter: '["natural"="peak"]' }
     },
     {
         id: 'parco-cave',
@@ -197,10 +302,39 @@ export const PICKS = [
             { label: 'Comune: urban treks (PDF)', url: 'https://comune.brescia.it/sites/default/files/2025-02/59.%20TREKKING%20URBANI.pdf' },
             { label: 'Comune: Parco delle Cave (PDF)', url: 'https://comune.brescia.it/sites/default/files/2025-02/43.%20B%20PARCO%20TERRITORIALE%20DELLE%20CAVE.pdf' }
         ],
-        find: { name: 'Parco delle Cave', near: [45.5150, 10.2600], radius: 4000 }
+        find: { q: ['Lago del Canneto, Brescia', 'Parco delle Cave, Brescia'], name: 'Parco delle Cave', near: [45.5150, 10.2600], radius: 4000 }
     },
 
     // ---------- Food (shops and markets, no restaurants) ----------
+    {
+        id: 'mercato-loggia',
+        category: 'food',
+        icon: '🧺',
+        name: 'Saturday market — Piazza della Loggia',
+        why: 'The city\'s big Saturday market fills the Loggia and the streets around it. It\'s the best place to put together a picnic: cheese, salumi and fruit from the food stalls, eaten an hour later on the castle walls.',
+        caution: 'Saturday 7:00–14:00, per the city (page updated October 2026). Since January 2026 some stalls have moved between Piazza Vittoria and Piazza della Loggia.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'Comune di Brescia', url: 'https://www.comune.brescia.it/it/vivere/mercato-piazza-loggia-emporium' },
+            { label: 'Giornale di Brescia', url: 'https://www.giornaledibrescia.it/cronaca/mercato-sabato-piazza-vittoria-trasloco-bancarelle-qh6xq1be' }
+        ],
+        find: { q: ['Palazzo della Loggia, Brescia'], name: 'Loggia', near: [45.5398, 10.2201], radius: 300 }
+    },
+    {
+        id: 'mercato-coperto',
+        category: 'food',
+        icon: '🥬',
+        name: 'Campagna Amica covered farmers\' market',
+        address: 'Piazzale Cremona 14, Brescia',
+        why: 'An indoor market where local farmers sell their own produce, cheese and meat directly. It\'s the closest thing in the city to buying from the farm.',
+        caution: 'Listed as Friday 9:00–18:00 and Saturday 8:00–14:00, but that page is undated. Confirm before going.',
+        confidence: 'confirmed',
+        evidence: [
+            { label: 'Brescia a Tavola', url: 'https://www.bresciaatavola.it/it/il-mercato-di-campagna-amica-prodotti-stagionali-di-qualita-a-km0/' },
+            { label: 'Coldiretti Brescia', url: 'https://brescia.coldiretti.it/news/le-attivita-di-campagna-amica/' }
+        ],
+        find: { q: ['Mercato Agricolo Coperto, Brescia'], name: 'Mercato Agricolo Coperto|Campagna Amica', near: [45.5320, 10.2234], radius: 400 }
+    },
     {
         id: 'veneto',
         category: 'food',
@@ -213,7 +347,7 @@ export const PICKS = [
             { label: 'Iginio Massari', url: 'https://www.iginiomassari.it/en/pages/pasticceria-veneto-brescia' },
             { label: 'Gambero Rosso', url: 'https://www.gamberorosso.it/ristoranti/pasticceria/pasticceria-veneto/' }
         ],
-        find: { name: 'Veneto|Massari', near: [45.5300, 10.2280], radius: 3000, filter: '["shop"]' }
+        find: { q: ['Pasticceria Veneto, Brescia'], name: 'Veneto|Massari', near: [45.5300, 10.2280], radius: 3000, filter: '["shop"]' }
     },
     {
         id: 'boglioni',
@@ -228,7 +362,7 @@ export const PICKS = [
             { label: 'Brescia DUC', url: 'https://www.brescia.eu/it/duc/pastificio-boglioni' },
             { label: 'Reviews', url: 'https://italiarecensioni.com/lombardy/pastificio-boglioni-265890' }
         ],
-        find: { name: 'Boglioni', near: [45.5408, 10.2215], radius: 1000 }
+        find: { q: ['Pastificio Boglioni, Brescia'], name: 'Boglioni', near: [45.5408, 10.2215], radius: 1000 }
     },
     {
         id: 'sarioli',
@@ -242,7 +376,7 @@ export const PICKS = [
             { label: 'Gambero Rosso: Pane e panettieri 2025', url: 'https://www.gamberorosso.it/notizie/migliori-panifici-italia/' },
             { label: 'Tripadvisor', url: 'https://www.tripadvisor.it/ShowUserReviews-g194702-d6572105-r367314980-Il_Pane_di_Maurizio_Sarioli-Brescia_Province_of_Brescia_Lombardy.html' }
         ],
-        find: { name: 'Sarioli', near: [45.5402, 10.2225], radius: 1000 }
+        find: { q: ['Il Pane di Maurizio Sarioli, Brescia'], name: 'Sarioli', near: [45.5402, 10.2225], radius: 1000 }
     },
     {
         id: 'gigola',
@@ -256,7 +390,7 @@ export const PICKS = [
         evidence: [
             { label: 'Gastronomia Gigola', url: 'https://www.gastronomiagigola.it/salumi-e-formaggi/' }
         ],
-        find: { name: 'Gigola', near: [45.5440, 10.2080], radius: 3000 }
+        find: { q: ['Gastronomia Gigola, Brescia'], name: 'Gigola', near: [45.5440, 10.2080], radius: 3000 }
     },
     {
         id: 'lanzani',
@@ -271,7 +405,7 @@ export const PICKS = [
             { label: 'Michelin Guide', url: 'https://guide.michelin.com/en/lombardia/brescia/restaurant/lanzani-bottega-bistrot' },
             { label: 'italia.it', url: 'https://www.italia.it/de/lombardei/brescia/gastronomie/lanzani-bottega---bistrot' }
         ],
-        find: { name: 'Lanzani', near: [45.5370, 10.1990], radius: 3000 }
+        find: { q: ['Lanzani Bottega, Via Albertano da Brescia, Brescia'], name: 'Lanzani', near: [45.5370, 10.1990], radius: 3000 }
     },
     {
         id: 'pan-per-focaccia',
@@ -286,7 +420,7 @@ export const PICKS = [
             { label: 'Italian Gourmet', url: 'https://www.italiangourmet.it/pan-per-focaccia-a-brescia-il-pane-come-una-volta/' },
             { label: 'Pagine Gialle', url: 'https://www.paginegialle.it/panperfocaccia-brescia' }
         ],
-        find: { name: 'Pan per Focaccia', near: [45.5470, 10.2150], radius: 3000 }
+        find: { q: ['Pan per Focaccia, Brescia'], name: 'Pan per Focaccia', near: [45.5470, 10.2150], radius: 3000 }
     },
     {
         id: 'bedont',
@@ -295,41 +429,13 @@ export const PICKS = [
         name: 'Bedont — gelato',
         address: 'Via Trento 18/b, Brescia',
         why: 'An artisan gelateria in Borgo Trento with a 70s feel, which appeared in Dissapore\'s top-100 gelaterie list.',
-        caution: 'That ranking dates from 2015; I found no recent confirmation that it is still open. Phone +39 030 338 5581.',
+        caution: 'The ranking dates from 2015. It is still listed in OpenStreetMap at Via Trento 18, but I found no recent review. Phone +39 030 338 5581.',
         confidence: 'check',
         evidence: [
             { label: 'Dissapore 2015', url: 'https://www.dissapore.com/grande-notizia/100-migliori-gelaterie-artigianali-2015/' },
             { label: 'Wanderlog', url: 'https://wanderlog.com/place/details/3269683/bedont-di-roberto-bedont' }
         ],
-        find: { name: 'Bedont', near: [45.5490, 10.2150], radius: 3000 }
-    },
-    {
-        id: 'porteri',
-        category: 'food',
-        icon: '🥓',
-        name: 'Salumeria Porteri',
-        address: 'Via Trento, Brescia',
-        why: 'A salumeria next to the old Trattoria Porteri, stocked almost entirely from local historic producers, including Bagòss.',
-        caution: 'The source is an older article; I found no street number or current hours.',
-        confidence: 'check',
-        evidence: [
-            { label: 'Weekend Premium', url: 'https://www.weekendpremium.it/weekend-gourmet-a-brescia-golosita-e-2-ricette-cucina-di-famiglia/' }
-        ],
-        find: { name: 'Porteri', near: [45.5490, 10.2150], radius: 3000 }
-    },
-    {
-        id: 'cascina-maggia',
-        category: 'food',
-        icon: '🧺',
-        name: 'Cascina Maggia — Saturday organic market',
-        address: 'Via della Maggia 3, Brescia',
-        why: 'A farm courtyard that hosts an organic market every Saturday morning, the closest thing to a real farmers\' market I could document in the city.',
-        caution: 'The only listing is from 2015 (Saturday 8:00–12:30). Confirm it still runs before going.',
-        confidence: 'check',
-        evidence: [
-            { label: 'Provincia di Brescia (2015 PDF)', url: 'https://old.provincia.brescia.it/sites/default/files/allegati/documenti/7207/mercati_contadini_bio_km0.pdf' }
-        ],
-        find: { name: 'Maggia', near: [45.5600, 10.2100], radius: 5000 }
+        find: { q: ['Bedont, Via Trento, Brescia'], name: 'Bedont', near: [45.5490, 10.2150], radius: 3000 }
     }
 ];
 
@@ -342,18 +448,26 @@ export const WALKS = [
         pitch: 'Brescia\'s best Renaissance painting is in its churches, not its museums. Start at Santi Nazaro e Celso during its short Sunday opening, then walk north through the centre, take in the Miracoli façade and the Franciscan cloisters on the way, and end by wandering the Carmine.'
     },
     {
-        id: 'walk-picnic',
-        name: 'Bread, ruins & a castle picnic',
-        when: 'Any day except Monday (Capitolium closed); bakery mornings',
-        stops: ['duomo-vecchio', 'sarioli', 'capitolium', 'castello'],
-        pitch: 'Look into the Rotonda, buy bread at Sarioli, pass the Roman temple, and climb Colle Cidneo to eat on the castle walls. It\'s short, but the climb at the end is real.'
+        id: 'walk-castle',
+        name: 'Up to the castle the quiet way',
+        when: 'Any morning; Saturdays, shop at the market first',
+        stops: ['mercato-loggia', 'san-faustino-riposo', 'sarioli', 'martinengo-courtyard', 'capitolium', 'san-cristo', 'san-pietro-oliveto', 'castello'],
+        pitch: 'Fill a bag at the Loggia market (Saturday) or at Sarioli, then climb Colle Cidneo past the small things most people miss: the Trullo church, the octopus courtyard, the Roman temple, the frescoed San Cristo and the cloister of San Pietro in Oliveto. Eat on the castle walls.'
     },
     {
         id: 'walk-west',
         name: 'The quiet west: Carmine to the Vantiniano',
-        when: 'Wednesday–Saturday, so Lanzani is open',
-        stops: ['pallata', 'carmine', 'vantiniano', 'lanzani'],
-        pitch: 'From the tower through the Carmine and out to the monumental cemetery, which is the least touristy great sight in Brescia. End by shopping for salumi and wine at Lanzani.'
+        when: 'Any day; the cemetery closes in the late afternoon',
+        stops: ['curt-dei-puli', 'pallata', 'carmine', 'vantiniano'],
+        pitch: 'From a hidden courtyard on Corso Mameli, past the tower, through the Carmine and out to the monumental cemetery, the least touristy great sight in Brescia.'
+    },
+    {
+        id: 'walk-maddalena',
+        name: 'The long one: castle to the Maddalena',
+        when: 'A clear, dry day; start early and carry water and food',
+        stops: ['castello', 'maddalena'],
+        effort: 'About 700 m of climbing (city about 150 m, summit 870 m). Allow around 3 hours up.',
+        pitch: 'A full day on foot. Leave the castle eastwards on the first stretch of the Sentiero 3V, the 120 km trail that starts here (white-and-blue marks), continue on "La Via delle Sorelle", and finish on CAI 906 to the summit. Most of it is on marked paths. Come back down by trail 901 to Sant\'Eufemia, where the Mille Miglia museum and the metro are, to make it a loop.'
     }
 ];
 

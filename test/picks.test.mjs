@@ -15,6 +15,7 @@ test('every pick is complete and sourced', () => {
         assert.ok(p.evidence.length >= 1, `${p.id}: needs a source`);
         for (const e of p.evidence) assert.match(e.url, /^https:\/\//, `${p.id}: source url`);
         assert.ok(p.find?.name && p.find.near?.length === 2 && p.find.radius > 0, `${p.id}: find`);
+        assert.ok(p.find.q?.length || p.find.coords?.length === 2, `${p.id}: needs lookup queries or sourced coordinates`);
         assert.doesNotThrow(() => new RegExp(p.find.name, 'i'), `${p.id}: regex`);
         assert.equal(p.lat, undefined, `${p.id}: no hand-typed coordinates`);
     }
@@ -58,7 +59,7 @@ test('buildWalks drops unlocated stops and keeps route stats', () => {
     const west = buildWalks(picks, { 'walk-west': { path: [[45.54, 10.21], [45.55, 10.22]], distance: 3456, duration: 2700 } })
         .find(w => w.id === 'walk-west');
     assert.deepEqual(west.stops, ['pallata', 'carmine']);
-    assert.deepEqual(west.missing, ['vantiniano', 'lanzani']);
+    assert.deepEqual(west.missing, ['curt-dei-puli', 'vantiniano']);
     assert.equal(west.distanceKm, 3.5);
     assert.equal(west.minutes, 45);
 });

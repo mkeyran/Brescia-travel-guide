@@ -1,24 +1,19 @@
-name: Build and deploy to GitHub Pages
+name: Tests
+
+# The site is served by GitHub Pages straight from the branch, including the
+# committed data/ folder (regenerate it with `node scripts/locate.mjs`).
+# This workflow only checks the guide and the code.
 
 on:
   push:
-    branches: [main, claude/brescia-travel-guide-app-7yIFz]
-  schedule:
-    # Weekly refresh of OpenStreetMap data (Mondays 03:17 UTC)
-    - cron: '17 3 * * 1'
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,19 +22,5 @@ jobs:
           node-version: 22
       - name: Unit tests
         run: node --test test/*.test.mjs
-      - name: Fetch OpenStreetMap data and build site
-        run: node scripts/build.mjs
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Committed data matches the guide
+        run: node scripts/check-data.mjs
